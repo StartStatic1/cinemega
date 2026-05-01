@@ -4,22 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cine Mega - Oficial</title>
+    
+    <script type="text/javascript" data-cfasync="false">
+    /*<![CDATA[/* */
+    (function(){var g=window,h="f4875cdf735c070a6ebae3a0bf13b576",y=[["siteId",99+904-753+959+5294952],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],r=["d3d3LmJsb2NrYWRzbm90LmNvbS9taGFtbWVyLm1pbi5jc3M=","ZG5oZmk1bm4yZHQ2Ny5jbG91ZGZyb250Lm5ldC9VSWZrVnMvb3NoYXJlci5taW4uanM=","d3d3LnhjaXNoY2V2dm5udS5jb20vaGhhbW1lci5taW4uY3Nz","d3d3Lmhka2lwa3p4LmNvbS9PQlB3blgvenNoYXJlci5taW4uanM="],l=-1,p,z,i=function(){clearTimeout(z);l++;if(r[l]&&!(1803594913000<(new Date).getTime()&&1<l)){p=g.document.createElement("script");p.type="text/javascript";p.async=!0;var t=g.document.getElementsByTagName("script")[0];p.src="https://"+atob(r[l]);p.crossOrigin="anonymous";p.onerror=i;p.onload=function(){clearTimeout(z);g[h.slice(0,16)+h.slice(0,16)]||i()};z=setTimeout(i,5E3);t.parentNode.insertBefore(p,t)}};if(!g[h]){try{Object.freeze(g[h]=y)}catch(e){}i()}})();
+    /*]]>/* */
+    </script>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; padding-top: 85px; }
         
-        /* HEADER FIXO */
         .header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); padding: 15px; z-index: 1000; border-bottom: 1px solid #e50914; backdrop-filter: blur(10px); }
-        .logo { color: #e50914; font-weight: 900; font-size: 24px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 2px; }
-        #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 18px; border-radius: 5px; border: 1px solid #333; background: #111; color: #fff; font-size: 15px; border: 1px solid #444; }
+        .logo { color: #e50914; font-weight: 900; font-size: 24px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 2px; cursor: pointer; }
+        #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 18px; border-radius: 5px; border: 1px solid #444; background: #111; color: #fff; font-size: 15px; }
 
-        /* BANNER HERO */
         .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; margin-bottom: 10px; }
         #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 1.5s; display: flex; align-items: flex-end; }
         .hero-info { background: linear-gradient(to top, #000, transparent); width: 100%; padding: 40px 20px; }
         .hero-info h2 { margin: 0; font-size: 26px; font-weight: 800; text-shadow: 2px 2px 4px #000; }
 
-        /* SEÇÕES DA HOME */
         .secao { padding-left: 15px; margin-bottom: 35px; }
         .titulo-secao { font-size: 16px; font-weight: bold; color: #ffcc00; margin-bottom: 5px; border-left: 4px solid #e50914; padding-left: 10px; text-transform: uppercase; }
         .sub-t { font-size: 11px; color: #666; display: block; margin-bottom: 12px; font-style: italic; }
@@ -29,7 +32,6 @@
         .card img { width: 100%; height: 185px; border-radius: 8px; object-fit: cover; border: 1px solid #222; }
         .card p { font-size: 11px; margin: 5px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #eee; }
 
-        /* OVERLAY DETALHES */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: auto; }
         .backdrop-header { width: 100%; height: 45vh; background-size: cover; background-position: center; position: relative; }
         .fechar-btn { position: absolute; top: 20px; right: 20px; background: rgba(229, 9, 20, 0.9); color: #fff; border: none; padding: 10px 20px; border-radius: 50px; font-weight: bold; z-index: 2100; }
@@ -38,48 +40,51 @@
         
         .btn-play-web { width: 100%; background: linear-gradient(45deg, #e50914, #ff0000); color: #fff; padding: 18px; border-radius: 12px; font-weight: bold; font-size: 18px; border: none; margin-bottom: 15px; cursor: pointer; }
         .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px; }
-        .btn-mini { padding: 12px; border-radius: 10px; border: none; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; }
+        .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; }
         .btn-morto { background: #222 !important; color: #444 !important; cursor: not-allowed !important; pointer-events: none; opacity: 0.5; }
 
         .trailer-box { width: 100%; max-width: 400px; aspect-ratio: 16/9; margin: 25px auto; border-radius: 12px; overflow: hidden; border: 1px solid #333; }
         .trailer-box iframe { width: 100%; height: 100%; border: none; }
-        .ator-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
-        .ator-card { min-width: 75px; text-align: center; }
-        .ator-card img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; }
+        
+        /* GRID BUSCA */
+        #lista-busca { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-right: 15px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo">CINE MEGA</div>
+        <div class="logo" onclick="voltarHome()">CINE MEGA</div>
         <input type="text" id="busca" placeholder="Pesquisar filme..." onkeyup="if(event.key === 'Enter') realizarBusca()">
     </div>
 
     <div id="home-content">
         <div class="hero-container"><div id="hero-banner"><div class="hero-info"><h2 id="hero-titulo">Carregando...</h2></div></div></div>
-
         <div class="secao">
             <div class="titulo-secao">VAI ESTREAR</div>
-            <span class="sub-t">Em breve nos cinemas (Apenas Trailers)</span>
+            <span class="sub-t">Exclusivo: Apenas Trailers de lançamentos futuros</span>
             <div class="carrossel" id="lista-estreias"></div>
         </div>
-
         <div class="secao">
             <div class="titulo-secao">MAIS ASSISTIDOS</div>
             <span class="sub-t">Os favoritos da nossa comunidade</span>
             <div class="carrossel" id="lista-populares"></div>
         </div>
-
         <div class="secao">
             <div class="titulo-secao">ADORA LIXO? VAMOS DE TRASH</div>
             <span class="sub-t">Aqueles clássicos do lixo que a gente ama</span>
             <div class="carrossel" id="lista-trash"></div>
         </div>
-
         <div class="secao">
             <div class="titulo-secao">VOCÊ TÁ VELHO, HEIN?</div>
             <span class="sub-t">Relíquias dos anos 80, 90 e 2000</span>
             <div class="carrossel" id="lista-classicos"></div>
+        </div>
+    </div>
+
+    <div id="busca-content" style="display:none; padding-top: 20px;">
+        <div class="secao">
+            <div class="titulo-secao" id="titulo-busca">RESULTADOS DA BUSCA</div>
+            <div id="lista-busca"></div>
         </div>
     </div>
 
@@ -103,7 +108,7 @@
                 <div class="titulo-secao">TRAILER</div>
                 <div class="trailer-box" id="yt-frame"></div>
                 <div class="titulo-secao">ELENCO</div>
-                <div class="ator-row" id="m-elenco"></div>
+                <div class="ator-row" id="m-elenco" style="display:flex; overflow-x:auto; gap:15px; scrollbar-width: none;"></div>
             </div>
         </div>
     </div>
@@ -113,31 +118,11 @@
         const MOTOR = "https://brave-jonis-meu-bot-cinema-7ce7d584.koyeb.app";
         let linkV = "";
 
-        // --- LÓGICA DE NAVEGAÇÃO POR GESTO (HISTÓRICO) ---
-        function abrir(id, isEstreia) {
-            // Cria um estado no histórico para o "voltar" do celular funcionar
-            window.history.pushState({view: 'detalhes'}, ''); 
-            mostrarDetalhes(id, isEstreia);
-        }
-
-        window.onpopstate = function(event) {
-            // Se o usuário usar o gesto de voltar e o player estiver aberto, apenas fecha o player
-            if (document.getElementById('overlay').style.display === 'block') {
-                fecharSilencioso(); 
-            }
+        // NAVEGAÇÃO INTELIGENTE
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = () => { 
+            if(document.getElementById('overlay').style.display == 'block') fecharSilencioso(); 
         };
-
-        function fechar() {
-            // Volta o histórico e fecha a aba
-            window.history.back();
-        }
-
-        function fecharSilencioso() {
-            // Apenas esconde a tela sem mexer no histórico
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('yt-frame').innerHTML = '';
-        }
-        // ------------------------------------------------
 
         async function api(url) { const r = await fetch(url); return await r.json(); }
 
@@ -153,13 +138,10 @@
         async function loadHome() {
             const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=2026-06-01&sort_by=popularity.desc`);
             preencher('lista-estreias', estreias.results, true);
-
             const pop = await api(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`);
             preencher('lista-populares', pop.results);
-
             const trash = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=27,28`);
             preencher('lista-trash', trash.results);
-
             const classicos = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&release_date.lte=2000-12-31&sort_by=popularity.desc`);
             preencher('lista-classicos', classicos.results);
 
@@ -172,7 +154,31 @@
             }, 8000);
         }
 
-        async function mostrarDetalhes(id, isEstreia) {
+        async function realizarBusca() {
+            const q = document.getElementById('busca').value;
+            if(!q) return;
+            document.getElementById('home-content').style.display = 'none';
+            document.getElementById('busca-content').style.display = 'block';
+            document.getElementById('titulo-busca').innerText = `RESULTADOS PARA: ${q.toUpperCase()}`;
+            const res = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
+            document.getElementById('lista-busca').innerHTML = res.results.map(f => `
+                <div class="card" style="width:100%" onclick="abrir(${f.id}, false)">
+                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" style="height:160px" onerror="this.src='https://via.placeholder.com/300x450?text=CineMega'">
+                    <p>${f.title}</p>
+                </div>
+            `).join('');
+            window.scrollTo(0,0);
+        }
+
+        function voltarHome() {
+            document.getElementById('busca').value = '';
+            document.getElementById('home-content').style.display = 'block';
+            document.getElementById('busca-content').style.display = 'none';
+            window.scrollTo(0,0);
+        }
+
+        async function abrir(id, isEstreia) {
+            window.history.pushState({view: 'detalhes'}, '');
             document.getElementById('overlay').style.display = 'block';
             const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits`);
             
@@ -198,6 +204,8 @@
         }
 
         function abrirPlayer() { window.open(linkV, '_blank'); }
+        function fechar() { window.history.back(); }
+        function fecharSilencioso() { document.getElementById('overlay').style.display = 'none'; document.getElementById('yt-frame').innerHTML = ''; }
 
         loadHome();
     </script>
