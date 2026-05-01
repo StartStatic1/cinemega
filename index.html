@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cine Mega Pro</title>
+    
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding-top: 140px; }
+        
+        /* HEADER FIXO */
+        .header { position: fixed; top: 0; width: 100%; background: #000; padding: 15px; z-index: 100; border-bottom: 1px solid #e50914; }
+        .logo { color: #e50914; font-weight: 900; font-size: 24px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 2px; }
+        #busca { width: 100%; max-width: 600px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; outline: none; font-size: 16px; }
+
+        /* GRID HOME */
+        .container { padding: 12px; max-width: 1000px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        @media (min-width: 600px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+        
+        .item { background: #111; border-radius: 12px; overflow: hidden; border: 1px solid #222; cursor: pointer; }
+        .item img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+        .item p { font-size: 11px; padding: 8px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; font-weight: bold; }
+
+        /* OVERLAY DE DETALHES (SEU LAYOUT FAVORITO) */
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 200; display: none; flex-direction: column; overflow-y: auto; }
+        .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 20px; border-radius: 50px; font-weight: bold; z-index: 210; }
+        
+        .trailer-box { width: 100%; border-bottom: 2px solid #e50914; }
+        .info-container { padding: 20px; max-width: 600px; margin: 0 auto; text-align: center; }
+        .capinha { width: 140px; border-radius: 12px; margin: -70px auto 10px; display: block; border: 2px solid rgba(255,255,255,0.1); box-shadow: 0 10px 20px #000; position: relative; z-index: 5; }
+        
+        .meta-info { color: #ffcc00; font-weight: bold; margin: 10px 0; font-size: 14px; }
+        .sinopse { text-align: justify; color: #bbb; font-size: 14px; line-height: 1.6; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; }
+
+        /* BOTÕES */
+        .play-panel { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-play { width: 100%; background: linear-gradient(45deg, #e50914, #ff0000); color: #fff; padding: 18px; border-radius: 15px; font-weight: 900; border: none; font-size: 18px; text-transform: uppercase; margin-bottom: 12px; box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4); }
+        .grid-alt { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-alt { padding: 12px; border-radius: 10px; border: none; color: #fff; font-weight: bold; font-size: 12px; }
+
+        /* ELENCO E RECOMENDADOS */
+        .row-titulo { text-align: left; color: #ffcc00; font-weight: bold; margin: 20px 0 10px; border-left: 4px solid #e50914; padding-left: 10px; }
+        .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
+        .ator-card { min-width: 80px; text-align: center; }
+        .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; }
+        .ator-card p { font-size: 10px; margin-top: 5px; color: #ccc; }
+        
+        .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .rec-card img { width: 100%; border-radius: 8px; border: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">CINE MEGA</div>
+        <input type="text" id="busca" placeholder="Pesquisar filme ou série..." onkeyup="if(event.key === 'Enter') buscar()">
+    </div>
+
+    <div class="container">
+        <div class="grid" id="lista-home"></div>
+    </div>
+
+    <div id="overlay">
+        <button class="fechar-btn" onclick="fechar()">✕ FECHAR</button>
+        
+        <div class="trailer-box" id="area-trailer">
+            </div>
+
+        <div class="info-container">
+            <img id="m-poster" class="capinha">
+            <h1 id="m-titulo" style="margin:0;">Título</h1>
+            <div class="meta-info" id="m-meta">Ano | Nota</div>
+
+            <div class="play-panel">
+                <button class="btn-play" onclick="abrirAba()">▶ ASSISTIR FILME</button>
+                <div class="grid-alt">
+                    <button id="btn-vlc" class="btn-alt" style="background:#FF8800">🟠 VLC PRO</button>
+                    <button id="btn-mx" class="btn-alt" style="background:#0052D4">🔵 MX PLAYER</button>
+                </div>
+            </div>
+
+            <div class="sinopse">
+                <b style="color:#ffcc00; display:block; margin-bottom:5px;">SINOPSE</b>
+                <span id="m-sinopse">...</span>
+            </div>
+
+            <div class="row-titulo">🎭 ELENCO</div>
+            <div class="elenco-row" id="m-elenco"></div>
+
+            <div class="row-titulo">🎬 VOCÊ PODE GOSTAR</div>
+            <div class="rec-grid" id="m-rec"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script>
+        const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
+        const MOTOR_URL = "https://brave-jonis-meu-bot-cinema-7ce7d584.koyeb.app";
+        let linkVideo = "";
+
+        async function buscar() {
+            const q = document.getElementById('busca').value;
+            if(!q) return;
+            const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            render(data.results, 'lista-home');
+        }
+
+        function render(filmes, containerId) {
+            const l = document.getElementById(containerId);
+            l.innerHTML = filmes.map(f => `
+                <div class="item" onclick="abrirDetalhes(${f.id})">
+                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/300x450?text=CineMega'">
+                    <p>${f.title}</p>
+                </div>
+            `).join('');
+            if(containerId === 'lista-home') window.scrollTo(0,0);
+        }
+
+        async function abrirDetalhes(id) {
+            document.getElementById('overlay').style.display = 'block';
+            const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits,recommendations`);
+            const d = await res.json();
+
+            // Preenche Infos
+            document.getElementById('m-titulo').innerText = d.title;
+            document.getElementById('m-poster').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
+            document.getElementById('m-meta').innerText = `⭐ ${d.vote_average.toFixed(1)} | ${d.release_date.split('-')[0]} | ${d.runtime} min`;
+            document.getElementById('m-sinopse').innerText = d.overview || "Sinopse indisponível.";
+            
+            // Trailer
+            const trailer = d.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+            const areaTrailer = document.getElementById('area-trailer');
+            if(trailer) {
+                areaTrailer.innerHTML = `<div class="plyr__video-embed" id="player-trailer"><iframe src="https://www.youtube.com/embed/${trailer.key}?origin=https://plyr.io&iv_load_policy=3&modestbranding=1&playsinline=1&showinfo=0&rel=0&enablejsapi=1" allowfullscreen allowtransparency allow="autoplay"></iframe></div>`;
+                new Plyr('#player-trailer');
+            } else {
+                areaTrailer.innerHTML = `<div style="height:200px; background:url(https://image.tmdb.org/t/p/original${d.backdrop_path}) center/cover"></div>`;
+            }
+
+            // Elenco
+            document.getElementById('m-elenco').innerHTML = d.credits.cast.slice(0,10).map(a => `
+                <div class="ator-card">
+                    <img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/100x100?text=Ator'">
+                    <p>${a.name}</p>
+                </div>
+            `).join('');
+
+            // Recomendados
+            document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,6).map(r => `
+                <div class="rec-card" onclick="abrirDetalhes(${r.id})"><img src="https://image.tmdb.org/t/p/w300${r.poster_path}"></div>
+            `).join('');
+
+            linkVideo = `${MOTOR_URL}/buscar?titulo=${encodeURIComponent(d.title)}`;
+            
+            // Botões Externos
+            const linkLimpo = linkVideo.replace(/https?:\/\//, '');
+            document.getElementById('btn-vlc').onclick = () => window.location.href = `intent://${linkLimpo}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
+            document.getElementById('btn-mx').onclick = () => window.location.href = `intent://${linkLimpo}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
+        }
+
+        function abrirAba() { window.open(linkVideo, '_blank'); }
+        function fechar() { document.getElementById('overlay').style.display = 'none'; document.getElementById('area-trailer').innerHTML = ''; }
+
+        // Carregar Populares
+        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`).then(r => r.json()).then(d => render(d.results, 'lista-home'));
+    </script>
+</body>
+</html>
