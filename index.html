@@ -18,6 +18,12 @@
         .logo { color: #e50914; font-weight: 900; font-size: 22px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 3px; cursor: pointer; }
         #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; }
 
+        /* HERO BANNER (RECUPERADO) */
+        .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; }
+        #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center top; transition: opacity 1s; display: flex; align-items: flex-end; opacity: 0; }
+        .hero-info { background: linear-gradient(to top, #000 30%, transparent); width: 100%; padding: 40px 20px; }
+        .hero-info h2 { margin: 0; font-size: 24px; font-weight: 800; text-shadow: 2px 2px 10px #000; }
+
         /* SEÇÕES HOME */
         .secao { padding-left: 15px; margin-bottom: 35px; }
         .titulo-secao { font-size: 15px; font-weight: bold; color: #ffcc00; margin-bottom: 6px; border-left: 4px solid #e50914; padding-left: 12px; text-transform: uppercase; }
@@ -61,10 +67,12 @@
 
     <div class="header">
         <div class="logo" onclick="voltarHome()">CINE MEGA</div>
-        <input type="text" id="busca" placeholder="Pesquisar..." onkeyup="if(event.key === 'Enter') realizarBusca()">
+        <input type="text" id="busca" placeholder="O que vamos assistir?" onkeyup="if(event.key === 'Enter') realizarBusca()">
     </div>
 
     <div id="home-content">
+        <div class="hero-container"><div id="hero-banner"><div class="hero-info"><h2 id="hero-titulo"></h2></div></div></div>
+        
         <div class="secao">
             <div class="titulo-secao">LANÇAMENTOS 2026</div>
             <div class="carrossel" id="lista-populares"></div>
@@ -115,7 +123,7 @@
     </div>
 
     <footer class="footer">
-        <span style="color: #e50914; font-weight: 900;">CINE MEGA</span>
+        <span class="footer-logo">CINE MEGA</span>
         <p class="footer-text">
             <strong>AVISO LEGAL:</strong> O Cine Mega funciona como um motor de indexação automático. Não hospedamos arquivos. Todos os direitos reservados.
         </p>
@@ -147,6 +155,23 @@
             preencher('lista-estreias', estreias.results, true);
             const trash = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=27&release_date.lte=2000-01-01&sort_by=popularity.desc`);
             preencher('lista-trash', trash.results);
+
+            // LOGICA DO BANNER HERO
+            if(pop.results) {
+                let i = 0;
+                const updateHero = () => {
+                    const f = pop.results[i];
+                    const b = document.getElementById('hero-banner');
+                    b.style.opacity = '0';
+                    setTimeout(() => {
+                        b.style.backgroundImage = `linear-gradient(to top, #000 10%, transparent), url(https://image.tmdb.org/t/p/original${f.backdrop_path})`;
+                        document.getElementById('hero-titulo').innerText = f.title;
+                        b.style.opacity = '1';
+                    }, 800);
+                    i = (i + 1) % 5;
+                };
+                updateHero(); setInterval(updateHero, 9000);
+            }
         }
 
         async function realizarBusca() {
@@ -197,7 +222,7 @@
                 <div class="card" onclick="abrir(${f.id}, false)"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}"><p>${f.title}</p></div>
             `).join('');
 
-            // --- VOLTA DA LÓGICA IMPECÁVEL EM PORTUGUÊS ---
+            // BUSCA EM PORTUGUÊS (VOLTOU A SER IMPECÁVEL)
             let ano = d.release_date.split('-')[0];
             linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title + " " + ano)}&id=${d.id}`;
             
