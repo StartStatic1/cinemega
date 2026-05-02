@@ -24,14 +24,16 @@
 
         .secao { padding-left: 15px; margin-bottom: 35px; }
         .titulo-secao { font-size: 15px; font-weight: bold; color: #ffcc00; margin-bottom: 6px; border-left: 4px solid #e50914; padding-left: 12px; text-transform: uppercase; }
-        .carrossel { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; scrollbar-width: none; }
+        
+        /* CORREÇÃO DO CARROSSEL: Forçando o scroll suave horizontal */
+        .carrossel { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .carrossel::-webkit-scrollbar { display: none; }
         
-        .card { min-width: 115px; width: 115px; cursor: pointer; }
+        /* CORREÇÃO DOS CARDS: flex-shrink: 0 impede o celular de espremer e travar */
+        .card { min-width: 115px; width: 115px; flex-shrink: 0; cursor: pointer; }
         .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; display: block; }
         .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
-        /* MÁGICA DA ROLAGEM APLICADA AQUI NO OVERLAY */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
         
         .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
@@ -46,8 +48,9 @@
         .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; cursor: pointer; }
         .btn-morto { background: #222 !important; color: #444 !important; cursor: not-allowed !important; pointer-events: none; opacity: 0.5; }
 
-        .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
-        .ator-card { min-width: 70px; text-align: center; }
+        /* CORREÇÃO DO ELENCO: Mesma regra do carrossel aplicada aqui */
+        .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .ator-card { min-width: 70px; flex-shrink: 0; text-align: center; }
         .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; display: block; margin: 0 auto; background: #222; }
         .ator-card p { font-size: 9px; color: #999; margin-top: 6px; line-height: 1.2; }
 
@@ -199,7 +202,6 @@
             window.history.pushState({view: 'detalhes'}, '');
             document.getElementById('overlay').style.display = 'block';
             
-            // TRAVA DE ROLAGEM APLICADA: Congela o fundo para o overlay rolar liso
             document.body.style.overflow = 'hidden';
             
             const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits,recommendations`);
@@ -242,7 +244,6 @@
         function fecharSilencioso() { 
             document.getElementById('overlay').style.display = 'none'; 
             document.getElementById('yt-frame').innerHTML = ''; 
-            // TRAVA DE ROLAGEM REMOVIDA: Libera o fundo ao fechar
             document.body.style.overflow = ''; 
         }
 
