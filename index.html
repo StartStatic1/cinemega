@@ -20,7 +20,7 @@
         .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; margin-bottom: 10px; }
         #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 1.5s; display: flex; align-items: flex-end; }
         .hero-info { background: linear-gradient(to top, #000, transparent); width: 100%; padding: 40px 20px; }
-        .hero-info h2 { margin: 0; font-size: 24px; font-weight: 800; text-shadow: 2px 2px 10px #000; }
+        .hero-info h2 { margin: 0; font-size: 26px; font-weight: 800; text-shadow: 2px 2px 10px #000; }
 
         .secao { padding-left: 15px; margin-bottom: 35px; }
         .titulo-secao { font-size: 15px; font-weight: bold; color: #ffcc00; margin-bottom: 6px; border-left: 4px solid #e50914; padding-left: 12px; text-transform: uppercase; }
@@ -60,7 +60,7 @@
 
     <div class="header">
         <div class="logo" onclick="voltarHome()">CINE MEGA</div>
-        <input type="text" id="busca" placeholder="Pesquisar filme..." onkeyup="if(event.key === 'Enter') realizarBusca()">
+        <input type="text" id="busca" placeholder="O que vamos assistir?" onkeyup="if(event.key === 'Enter') realizarBusca()">
     </div>
 
     <div id="home-content">
@@ -123,7 +123,8 @@
 
     <script>
         const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
-        const MOTOR = "https://brave-jonis-meu-bot-cinema-7ce7d584.koyeb.app";
+        // NOVO MOTOR DO RENDER CONECTADO AQUI:
+        const MOTOR = "https://api-scraper-cinema.onrender.com";
         let linkV = "";
 
         window.history.pushState(null, null, window.location.href);
@@ -141,10 +142,10 @@
         }
 
         async function loadHome() {
-            const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=2026-06-01&sort_by=popularity.desc`);
-            preencher('lista-estreias', estreias.results, true);
             const pop = await api(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`);
             preencher('lista-populares', pop.results);
+            const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=2026-06-01&sort_by=popularity.desc`);
+            preencher('lista-estreias', estreias.results, true);
             const trash = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=27,28`);
             preencher('lista-trash', trash.results);
             const classicos = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&release_date.lte=2000-12-31&sort_by=popularity.desc`);
@@ -208,10 +209,8 @@
                 <div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/100'"><p>${a.name}</p></div>
             `).join('');
 
-            // A MÁGICA: Limpa o nome no HTML antes de mandar pro motor
-            let tituloPuro = d.title.replace(/[:!?,.]/g, '').replace(/\s+/g, ' ').trim();
-            
-            linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(tituloPuro)}`;
+            // BUSCA DIRETA NO NOVO RENDER
+            linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
             
             document.getElementById('vlc-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
             document.getElementById('mx-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
