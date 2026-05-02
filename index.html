@@ -1,115 +1,227 @@
-import os
-import re
-import requests
-from flask import Flask, request, redirect
-
-app = Flask(__name__)
-
-# Suas listas originais
-LISTAS_M3U = [
-    "https://github.com/StartStatic1/meus-apks/releases/download/V_backup/lista.m3u",
-    "https://github.com/StartStatic1/meus-apks/releases/download/V_BACKUP2/lista2.m3u"
-]
-
-# Dicionário na memória: Guarda o nome do filme e TODOS os links associados a ele
-catalogo_filmes = {}
-
-def limpar_texto(texto):
-    """Limpa o nome arrancando anos (1997), tags HD, FHD, legendado, etc."""
-    t = re.sub(r'\[.*?\]|\(.*?\)', '', str(texto))
-    t = re.sub(r'(?i)(1080p|720p|4k|fhd|hd|dual|dublado|legendado)', '', t)
-    t = re.sub(r'[^a-zA-Z0-9\s]', '', t)
-    return " ".join(t.split()).lower()
-
-def carregar_m3u():
-    global catalogo_filmes
-    catalogo_filmes = {}
-    print("🚀 Iniciando Motor VIP e filtrando listas...")
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cine Mega - Oficial</title>
     
-    for url in LISTAS_M3U:
-        try:
-            r = requests.get(url, stream=True, timeout=30)
-            linhas = [l.decode('utf-8', errors='ignore').strip() for l in r.iter_lines() if l]
-            
-            for i in range(len(linhas)):
-                if linhas[i].startswith("#EXTINF"):
-                    # Pega o nome do filme e limpa toda a sujeira
-                    nome_sujo = linhas[i].split(",")[-1]
-                    nome_limpo = limpar_texto(nome_sujo)
-                    
-                    if i + 1 < len(linhas):
-                        link = linhas[i+1]
-                        if "movie" in link or ".mp4" in link or ".mkv" in link:
-                            # Se o filme não existe no dicionário, cria uma lista pra ele
-                            if nome_limpo not in catalogo_filmes:
-                                catalogo_filmes[nome_limpo] = []
-                            # Adiciona o link na lista de opções daquele filme
-                            catalogo_filmes[nome_limpo].append(link)
-        except Exception as e:
-            print(f"Erro ao carregar lista {url}: {e}")
-            
-    print(f"✅ Catálogo pronto! {len(catalogo_filmes)} títulos únicos na memória.")
+    <meta name="description" content="Indexador automático de cinema. Trailers, elencos e informações.">
+    <meta name="robots" content="index, follow">
 
-# Carrega as listas assim que o servidor ligar
-carregar_m3u()
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
+        html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; width: 100%; }
+        body { padding-top: 110px; }
 
-def buscar_sniper_vip(titulo):
-    titulo_busca = limpar_texto(titulo)
-    links_encontrados = []
-    
-    # 1. Busca Direta
-    if titulo_busca in catalogo_filmes:
-        links_encontrados = catalogo_filmes[titulo_busca]
-    else:
-        # 2. Busca por contenção (se o nome estiver no meio de outras palavras)
-        for nome_cat, links in catalogo_filmes.items():
-            if titulo_busca in nome_cat:
-                links_encontrados.extend(links)
+        .header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.96); padding: 15px; z-index: 1000; border-bottom: 2px solid #e50914; backdrop-filter: blur(10px); }
+        .logo { color: #e50914; font-weight: 900; font-size: 22px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 3px; cursor: pointer; }
+        #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; }
 
-    if not links_encontrados:
-        return None
+        .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; margin-bottom: 10px; }
+        #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 1.5s; display: flex; align-items: flex-end; }
+        .hero-info { background: linear-gradient(to top, #000, transparent); width: 100%; padding: 40px 20px; }
+        .hero-info h2 { margin: 0; font-size: 24px; font-weight: 800; text-shadow: 2px 2px 10px #000; }
 
-    # ===============================================================
-    # 🔥 A MÁGICA: SISTEMA DE PRIORIDADE DE SERVIDORES (VIP vs LIXO)
-    # ===============================================================
-    link_vip = None
-    link_secundario = None
-
-    for link in links_encontrados:
-        # SE TIVER IP PREMIUM, SERV99 OU O NOVO MASTER99999, É VIP! CAPTURA NA HORA.
-        if "209.131.122.80" in link or "serv99" in link or "master99999" in link:
-            link_vip = link
-            break # Achamos o ouro absoluto, para de procurar!
-            
-        # Se for o fontedecanais, a gente guarda só se não tiver NENHUMA outra opção
-        elif "fontedecanais" in link:
-            if not link_secundario:
-                link_secundario = link
+        .secao { padding-left: 15px; margin-bottom: 35px; }
+        .titulo-secao { font-size: 15px; font-weight: bold; color: #ffcc00; margin-bottom: 6px; border-left: 4px solid #e50914; padding-left: 12px; text-transform: uppercase; }
+        .carrossel { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; scrollbar-width: none; }
+        .carrossel::-webkit-scrollbar { display: none; }
         
-        # Qualquer outro link aleatório ganha do fontedecanais
-        else:
-            link_secundario = link
+        .card { min-width: 115px; width: 115px; cursor: pointer; }
+        .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; display: block; }
+        .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
-    # O sistema sempre devolve o VIP primeiro.
-    return link_vip if link_vip else link_secundario
-
-@app.route("/buscar")
-def buscar():
-    titulo = request.args.get("titulo", "")
-    if not titulo:
-        return "Título não fornecido", 400
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: auto; }
+        .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
+        .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; z-index: 3000; }
+        .corpo-detalhes { padding: 20px; margin-top: -60px; background: #000; border-radius: 40px 40px 0 0; position: relative; z-index: 2100; }
         
-    link = buscar_sniper_vip(titulo)
-    
-    if link:
-        # Redireciona o site direto pro MP4 bom
-        return redirect(link)
-    else:
-        return "Filme indisponível nos servidores.", 404
+        .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; box-shadow: 0 0 30px #000; object-fit: cover; position: relative; z-index: 2900; background: #111; }
+        
+        .btn-play-web { width: 100%; background: linear-gradient(45deg, #e50914, #8b0000); color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; border: none; margin-bottom: 15px; cursor: pointer; text-transform: uppercase; }
+        .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
+        .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .btn-morto { background: #222 !important; color: #444 !important; cursor: not-allowed !important; pointer-events: none; opacity: 0.5; }
 
-@app.route("/")
-def index():
-    return f"🚀 Motor Cine Mega VIP Online! | Títulos Indexados: {len(catalogo_filmes)}", 200
+        .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
+        .ator-card { min-width: 70px; text-align: center; }
+        .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; display: block; margin: 0 auto; background: #222; }
+        .ator-card p { font-size: 9px; color: #999; margin-top: 6px; line-height: 1.2; }
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+        .trailer-box { width: 100%; aspect-ratio: 16/9; margin: 20px 0; border-radius: 10px; overflow: hidden; background: #111; border: 1px solid #222; }
+        .trailer-box iframe { width: 100%; height: 100%; border: none; }
+
+        .footer { padding: 40px 20px; background: #0a0a0a; border-top: 1px solid #222; text-align: center; margin-top: 50px; }
+        .footer-logo { color: #e50914; font-weight: 900; font-size: 18px; margin-bottom: 15px; display: block; }
+        .footer-text { font-size: 11px; color: #666; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+    </style>
+</head>
+<body oncontextmenu="return false">
+
+    <div class="header">
+        <div class="logo" onclick="voltarHome()">CINE MEGA</div>
+        <input type="text" id="busca" placeholder="Pesquisar filme..." onkeyup="if(event.key === 'Enter') realizarBusca()">
+    </div>
+
+    <div id="home-content">
+        <div class="hero-container"><div id="hero-banner"><div class="hero-info"><h2 id="hero-titulo">Carregando...</h2></div></div></div>
+        
+        <div class="secao">
+            <div class="titulo-secao">MAIS ASSISTIDOS</div>
+            <div class="carrossel" id="lista-populares"></div>
+        </div>
+        <div class="secao">
+            <div class="titulo-secao">VAI ESTREAR</div>
+            <div class="carrossel" id="lista-estreias"></div>
+        </div>
+        <div class="secao">
+            <div class="titulo-secao">ADORA LIXO? VAMOS DE TRASH</div>
+            <div class="carrossel" id="lista-trash"></div>
+        </div>
+        <div class="secao">
+            <div class="titulo-secao">VOCÊ TÁ VELHO, HEIN?</div>
+            <div class="carrossel" id="lista-classicos"></div>
+        </div>
+    </div>
+
+    <div id="busca-content" style="display:none; padding-top: 50px;">
+        <div class="secao">
+            <div class="titulo-secao" id="titulo-busca">RESULTADOS DA BUSCA</div>
+            <div id="lista-busca" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px;"></div>
+        </div>
+    </div>
+
+    <div id="overlay">
+        <div id="m-backdrop" class="backdrop-header"><button class="fechar-btn" onclick="fechar()">✕ VOLTAR</button></div>
+        <div class="corpo-detalhes">
+            <img id="m-capa" class="capa-mini">
+            <h1 id="m-nome" style="text-align:center; margin: 0 0 10px 0; font-size: 22px;"></h1>
+            <div id="m-meta" style="text-align:center; color:#ffcc00; font-weight:bold; margin-bottom: 25px; font-size: 12px;"></div>
+            
+            <button id="btn-main-play" class="btn-play-web" onclick="abrirPlayer()">▶ REPRODUZIR NO SITE</button>
+
+            <div class="mini-grid">
+                <button id="vlc-btn" class="btn-mini" style="background:#FF8800">VLC PLAYER</button>
+                <button id="mx-btn" class="btn-mini" style="background:#0052D4">MX PLAYER</button>
+            </div>
+
+            <div style="text-align:left;">
+                <div class="titulo-secao">SINOPSE</div>
+                <p id="m-sinopse" style="color:#bbb; font-size: 13px; line-height: 1.6; padding: 10px 0;"></p>
+                <div class="titulo-secao">TRAILER</div>
+                <div class="trailer-box" id="yt-frame"></div>
+                <div class="titulo-secao">ELENCO</div>
+                <div class="elenco-row" id="m-elenco"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <span class="footer-logo">CINE MEGA</span>
+        <p class="footer-text"><strong>AVISO LEGAL:</strong> O Cine Mega funciona como um motor de indexação automático. Não hospedamos arquivos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
+        const MOTOR = "https://brave-jonis-meu-bot-cinema-7ce7d584.koyeb.app";
+        let linkV = "";
+
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = () => { if(document.getElementById('overlay').style.display == 'block') { fecharSilencioso(); } };
+
+        async function api(url) { const r = await fetch(url); return await r.json(); }
+
+        function preencher(id, dados, isEstreia = false) {
+            document.getElementById(id).innerHTML = dados.map(f => `
+                <div class="card" onclick="abrir(${f.id}, ${isEstreia})">
+                    <img src="${f.poster_path ? 'https://image.tmdb.org/t/p/w300' + f.poster_path : 'https://via.placeholder.com/300x450?text=CineMega'}" onerror="this.src='https://via.placeholder.com/300x450?text=CineMega'">
+                    <p>${f.title}</p>
+                </div>
+            `).join('');
+        }
+
+        async function loadHome() {
+            const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=2026-06-01&sort_by=popularity.desc`);
+            preencher('lista-estreias', estreias.results, true);
+            const pop = await api(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`);
+            preencher('lista-populares', pop.results);
+            const trash = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=27,28`);
+            preencher('lista-trash', trash.results);
+            const classicos = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&release_date.lte=2000-12-31&sort_by=popularity.desc`);
+            preencher('lista-classicos', classicos.results);
+
+            if(pop.results && pop.results.length > 0) {
+                let i = 0;
+                const f_init = pop.results[0];
+                document.getElementById('hero-banner').style.backgroundImage = `linear-gradient(to top, #000, transparent), url(https://image.tmdb.org/t/p/original${f_init.backdrop_path})`;
+                document.getElementById('hero-titulo').innerText = f_init.title;
+
+                setInterval(() => {
+                    i = (i + 1) % 5;
+                    const f = pop.results[i];
+                    document.getElementById('hero-banner').style.backgroundImage = `linear-gradient(to top, #000, transparent), url(https://image.tmdb.org/t/p/original${f.backdrop_path})`;
+                    document.getElementById('hero-titulo').innerText = f.title;
+                }, 8000);
+            }
+        }
+
+        async function realizarBusca() {
+            const q = document.getElementById('busca').value; if(!q) return;
+            document.getElementById('home-content').style.display = 'none';
+            document.getElementById('busca-content').style.display = 'block';
+            document.getElementById('titulo-busca').innerText = `RESULTADOS PARA: ${q.toUpperCase()}`;
+            const res = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
+            document.getElementById('lista-busca').innerHTML = res.results.map(f => `
+                <div class="card" style="width:100%" onclick="abrir(${f.id}, false)">
+                    <img src="${f.poster_path ? 'https://image.tmdb.org/t/p/w300' + f.poster_path : 'https://via.placeholder.com/300x450?text=CineMega'}" style="height:160px" onerror="this.src='https://via.placeholder.com/300x450?text=CineMega'">
+                    <p>${f.title}</p>
+                </div>
+            `).join('');
+            window.scrollTo(0,0);
+        }
+
+        function voltarHome() {
+            document.getElementById('busca').value = '';
+            document.getElementById('home-content').style.display = 'block';
+            document.getElementById('busca-content').style.display = 'none';
+            window.scrollTo(0,0);
+        }
+
+        async function abrir(id, isEstreia) {
+            window.history.pushState({view: 'detalhes'}, '');
+            document.getElementById('overlay').style.display = 'block';
+            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits`);
+            
+            document.getElementById('m-nome').innerText = d.title;
+            document.getElementById('m-capa').src = d.poster_path ? `https://image.tmdb.org/t/p/w300${d.poster_path}` : 'https://via.placeholder.com/300x450?text=Sem+Capa';
+            document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
+            document.getElementById('m-sinopse').innerText = d.overview || "Sem sinopse disponível.";
+            document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)} | ${d.runtime} min`;
+            
+            const btns = [document.getElementById('btn-main-play'), document.getElementById('vlc-btn'), document.getElementById('mx-btn')];
+            btns.forEach(b => isEstreia ? b.classList.add('btn-morto') : b.classList.remove('btn-morto'));
+
+            const trailer = d.videos.results.find(v => v.type == 'Trailer' || v.type == 'Teaser');
+            document.getElementById('yt-frame').innerHTML = trailer ? `<iframe src="https://www.youtube.com/embed/${trailer.key}?rel=0" allowfullscreen></iframe>` : `<p style="text-align:center;color:#444">Trailer indisponível.</p>`;
+
+            document.getElementById('m-elenco').innerHTML = d.credits.cast.slice(0,10).map(a => `
+                <div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/100'"><p>${a.name}</p></div>
+            `).join('');
+
+            // A MÁGICA: Limpa o nome no HTML antes de mandar pro motor
+            let tituloPuro = d.title.replace(/[:!?,.]/g, '').replace(/\s+/g, ' ').trim();
+            
+            linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(tituloPuro)}`;
+            
+            document.getElementById('vlc-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
+            document.getElementById('mx-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
+        }
+
+        function abrirPlayer() { window.open(linkV, '_blank'); }
+        function fechar() { window.history.back(); }
+        function fecharSilencioso() { document.getElementById('overlay').style.display = 'none'; document.getElementById('yt-frame').innerHTML = ''; }
+
+        loadHome();
+    </script>
+</body>
+</html>
