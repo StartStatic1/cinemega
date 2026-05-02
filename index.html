@@ -38,7 +38,8 @@
         
         .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; box-shadow: 0 0 30px #000; object-fit: cover; position: relative; z-index: 2900; background: #111; }
         
-        .btn-play-web { width: 100%; background: linear-gradient(45deg, #e50914, #8b0000); color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; border: none; margin-bottom: 15px; cursor: pointer; text-transform: uppercase; }
+        .btn-play-web { width: 100%; background: linear-gradient(45deg, #e50914, #8b0000); color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; border: none; margin-bottom: 10px; cursor: pointer; text-transform: uppercase; }
+        .btn-ad-apoio { width: 100%; background: #222; color: #aaa; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 12px; border: 1px solid #333; margin-bottom: 20px; cursor: pointer; text-transform: uppercase; }
         .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
         .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; cursor: pointer; }
         .btn-morto { background: #222 !important; color: #444 !important; cursor: not-allowed !important; pointer-events: none; opacity: 0.5; }
@@ -99,6 +100,8 @@
             <div id="m-meta" style="text-align:center; color:#ffcc00; font-weight:bold; margin-bottom: 25px; font-size: 12px;"></div>
             
             <button id="btn-main-play" class="btn-play-web" onclick="abrirPlayer()">▶ REPRODUZIR NO SITE</button>
+            
+            <button class="btn-ad-apoio" onclick="window.open('https://encouragingjawsordinarily.com/ry7p009n?key=95b85148b51ed8b7c922d3349f922a8c', '_blank')">🎁 APOIAR O PROJETO (VER ANÚNCIO)</button>
 
             <div class="mini-grid">
                 <button id="vlc-btn" class="btn-mini" style="background:#FF8800">VLC PLAYER</button>
@@ -112,6 +115,9 @@
                 <div class="trailer-box" id="yt-frame"></div>
                 <div class="titulo-secao">ELENCO</div>
                 <div class="elenco-row" id="m-elenco"></div>
+                
+                <div class="titulo-secao" style="margin-top: 15px;">VOCÊ TAMBÉM PODE GOSTAR</div>
+                <div class="carrossel" id="m-rec"></div>
             </div>
         </div>
     </div>
@@ -123,7 +129,6 @@
 
     <script>
         const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
-        // NOVO MOTOR DO RENDER CONECTADO AQUI:
         const MOTOR = "https://api-scraper-cinema.onrender.com";
         let linkV = "";
 
@@ -191,7 +196,9 @@
         async function abrir(id, isEstreia) {
             window.history.pushState({view: 'detalhes'}, '');
             document.getElementById('overlay').style.display = 'block';
-            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits`);
+            
+            // ADICIONADO "recommendations" na chamada da API
+            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits,recommendations`);
             
             document.getElementById('m-nome').innerText = d.title;
             document.getElementById('m-capa').src = d.poster_path ? `https://image.tmdb.org/t/p/w300${d.poster_path}` : 'https://via.placeholder.com/300x450?text=Sem+Capa';
@@ -209,7 +216,18 @@
                 <div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/100'"><p>${a.name}</p></div>
             `).join('');
 
-            // BUSCA DIRETA NO NOVO RENDER
+            // PREENCHENDO A ABA VOCÊ TAMBÉM PODE GOSTAR
+            if(d.recommendations && d.recommendations.results && d.recommendations.results.length > 0) {
+                document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,10).map(f => `
+                    <div class="card" onclick="abrir(${f.id}, false)">
+                        <img src="${f.poster_path ? 'https://image.tmdb.org/t/p/w300' + f.poster_path : 'https://via.placeholder.com/300x450?text=CineMega'}" onerror="this.src='https://via.placeholder.com/300x450?text=CineMega'">
+                        <p>${f.title}</p>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('m-rec').innerHTML = '<p style="color:#666; font-size:12px; padding: 10px 0;">Nenhuma recomendação encontrada.</p>';
+            }
+
             linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
             
             document.getElementById('vlc-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
@@ -222,5 +240,7 @@
 
         loadHome();
     </script>
+    
+    <script>(function(s){s.dataset.zone='10953586',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 </body>
 </html>
