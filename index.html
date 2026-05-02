@@ -12,8 +12,8 @@
     </script>
 
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; -webkit-user-select: none; }
-        html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; width: 100%; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
+        html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; }
         body { padding-top: 110px; }
 
         .header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.98); padding: 15px; z-index: 1000; border-bottom: 2px solid #e50914; backdrop-filter: blur(15px); }
@@ -35,15 +35,17 @@
         .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; }
         .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
-        /* OVERLAY DETALHES */
+        /* OVERLAY DETALHES CORRIGIDO */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: auto; }
         .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
-        .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; }
-        .corpo-detalhes { padding: 20px; margin-top: -60px; background: #000; border-radius: 40px 40px 0 0; position: relative; }
-        .capa-grande { width: 150px; border-radius: 12px; margin: -100px auto 20px; display: block; border: 4px solid #000; box-shadow: 0 0 30px #000; }
+        .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; z-index: 2100; }
         
-        /* AVISO AMARELO */
-        .aviso-estreia { background: #ffcc00; color: #000; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 15px; display: none; }
+        .corpo-detalhes { padding: 20px; margin-top: -50px; background: #000; border-radius: 40px 40px 0 0; position: relative; z-index: 2050; }
+        
+        /* A FOTO MINI VOLTOU */
+        .capa-grande { width: 140px; height: 210px; border-radius: 12px; margin: -120px auto 20px; display: block; border: 4px solid #000; box-shadow: 0 0 30px #000; object-fit: cover; position: relative; z-index: 2100; }
+        
+        .aviso-estreia { background: #ffcc00; color: #000; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 11px; text-align: center; margin-bottom: 15px; display: none; }
 
         .btn-play-web { width: 100%; background: linear-gradient(45deg, #e50914, #8b0000); color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; border: none; margin-bottom: 15px; cursor: pointer; text-transform: uppercase; }
         .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
@@ -59,15 +61,11 @@
 
         .footer { padding: 40px 20px; background: #0a0a0a; border-top: 1px solid #222; text-align: center; margin-top: 50px; }
         .footer-text { font-size: 11px; color: #666; line-height: 1.6; max-width: 600px; margin: 0 auto; }
-
-        #busca-content { padding-top: 50px; }
-        #lista-busca { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px; }
         
-        /* ESTILO BOTÃO BLOQUEADO */
         .btn-morto { background: #222 !important; color: #444 !important; pointer-events: none !important; opacity: 0.5; filter: grayscale(1); }
     </style>
 </head>
-<body oncontextmenu="return false" onkeydown="return false">
+<body>
 
     <div class="header">
         <div class="logo" onclick="voltarHome()">CINE MEGA</div>
@@ -79,33 +77,33 @@
         
         <div class="secao">
             <div class="titulo-secao">LANÇAMENTOS 2026</div>
-            <span class="sub-t">Sucessos que acabaram de sair</span>
+            <span class="sub-t">Os filmes mais procurados do momento</span>
             <div class="carrossel" id="lista-populares"></div>
         </div>
 
         <div class="secao">
             <div class="titulo-secao">VAI ESTREAR</div>
-            <span class="sub-t">Assista aos trailers dos próximos sucessos</span>
+            <span class="sub-t">Fique por dentro do que está por vir</span>
             <div class="carrossel" id="lista-estreias"></div>
         </div>
 
         <div class="secao">
             <div class="titulo-secao">ADORA LIXO? VAMOS DE TRASH</div>
-            <span class="sub-t">Terror clássico e monstros dos anos 80/90</span>
+            <span class="sub-t">Terror B e clássicos dos monstros</span>
             <div class="carrossel" id="lista-trash"></div>
         </div>
 
         <div class="secao">
             <div class="titulo-secao">VOCÊ TÁ VELHO, HEIN? CLÁSSICOS</div>
-            <span class="sub-t">Relíquias inesquecíveis até o ano 2000</span>
+            <span class="sub-t">Filmes inesquecíveis lançados até 2000</span>
             <div class="carrossel" id="lista-classicos"></div>
         </div>
     </div>
 
-    <div id="busca-content" style="display:none;">
+    <div id="busca-content" style="display:none; padding-top: 50px;">
         <div class="secao">
             <div class="titulo-secao" id="titulo-busca">RESULTADOS DA BUSCA</div>
-            <div id="lista-busca"></div>
+            <div id="lista-busca" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;"></div>
         </div>
     </div>
 
@@ -115,7 +113,7 @@
             <img id="m-capa" class="capa-grande">
             <h1 id="m-nome" style="text-align:center; margin: 0 0 10px 0; font-size: 22px;"></h1>
             
-            <div id="aviso-status" class="aviso-estreia">⚠️ ATENÇÃO: Este filme ainda não estreou nos cinemas. Assista ao trailer oficial abaixo.</div>
+            <div id="aviso-status" class="aviso-estreia">⚠️ ESTE FILME AINDA NÃO ESTREOU. ASSISTA AO TRAILER ABAIXO.</div>
 
             <div id="m-meta" style="text-align:center; color:#ffcc00; font-weight:bold; margin-bottom: 25px; font-size: 12px;"></div>
             
@@ -140,12 +138,8 @@
     </div>
 
     <footer class="footer">
-        <span class="footer-logo" style="color: #e50914; font-weight: 900;">CINE MEGA</span>
-        <p class="footer-text">
-            <strong>AVISO LEGAL:</strong> O Cine Mega funciona como um motor de indexação automático. <strong>Não hospedamos</strong> arquivos em nossos servidores.
-            <br>
-            © 2026 Cine Mega - Todos os direitos reservados.
-        </p>
+        <span style="color: #e50914; font-weight: 900;">CINE MEGA</span>
+        <p class="footer-text">© 2026 Cine Mega - Todos os direitos reservados.</p>
     </footer>
 
     <script>
@@ -153,7 +147,6 @@
         const MOTOR = "https://brave-jonis-meu-bot-cinema-7ce7d584.koyeb.app";
         let linkV = "";
 
-        document.onkeydown = (e) => { if(e.keyCode == 123 || (e.ctrlKey && (e.keyCode == 67 || e.keyCode == 85 || e.keyCode == 73))) return false; };
         window.history.pushState(null, null, window.location.href);
         window.onpopstate = () => { if(document.getElementById('overlay').style.display == 'block') { fecharSilencioso(); window.history.pushState(null, null, window.location.href); } };
 
@@ -209,7 +202,6 @@
         }
 
         function voltarHome() {
-            document.getElementById('busca').value = '';
             document.getElementById('home-content').style.display = 'block';
             document.getElementById('busca-content').style.display = 'none';
         }
@@ -220,12 +212,11 @@
             const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits,recommendations`);
             
             document.getElementById('m-nome').innerText = d.title;
-            document.getElementById('m-capa').src = `https://image.tmdb.org/p/w300${d.poster_path}`;
+            document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
             document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
             document.getElementById('m-sinopse').innerText = d.overview || "Sinopse não disponível.";
             document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)} | ${d.runtime} min`;
             
-            // --- LÓGICA DE BLOQUEIO DOS BOTÕES ---
             const btns = [document.getElementById('btn-main-play'), document.getElementById('vlc-btn'), document.getElementById('mx-btn')];
             const aviso = document.getElementById('aviso-status');
 
@@ -236,7 +227,6 @@
                 btns.forEach(b => b.classList.remove('btn-morto'));
                 aviso.style.display = 'none';
             }
-            // ------------------------------------
 
             const trailer = d.videos.results.find(v => v.type == 'Trailer');
             document.getElementById('yt-frame').innerHTML = trailer ? `<iframe src="https://www.youtube.com/embed/${trailer.key}?rel=0" allowfullscreen></iframe>` : `<p style="text-align:center;color:#444">Trailer indisponível.</p>`;
@@ -250,8 +240,7 @@
             `).join('');
 
             let ano = d.release_date.split('-')[0];
-            let tituloBusca = d.original_title || d.title;
-            linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(tituloBusca + " " + ano)}&id=${d.id}`;
+            linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title + " " + ano)}&id=${d.id}`;
             
             document.getElementById('vlc-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
             document.getElementById('mx-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
