@@ -6,13 +6,13 @@
     <title>Cine Mega - Oficial</title>
     
     <style>
-        /* PROTEÇÃO TOTAL: Impede seleção e cópia */
+        /* PROTEÇÃO TOTAL */
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
             outline: none;
-            -webkit-touch-callout: none; /* Impede menu de salvar imagem */
-            -webkit-user-select: none;   /* Impede seleção de texto */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
             user-select: none;
         }
         
@@ -47,12 +47,14 @@
         
         #aviso-estreia { background: #ffcc00; color: #000; padding: 10px; border-radius: 8px; font-size: 11px; font-weight: 900; text-align: center; margin-bottom: 15px; display: none; }
         
-        /* BOTÃO VERMELHO ESTILO LINK DIRETO */
         .btn-play-web { display: block; width: 100%; background: #e50914; color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; text-decoration: none; text-align: center; margin-bottom: 15px; text-transform: uppercase; }
         
         .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
         .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; cursor: pointer; text-align: center; text-decoration: none; }
         .btn-desabilitado { background: #1a1a1a !important; color: #444 !important; pointer-events: none; opacity: 0.6; }
+
+        .trailer-box { width: 100%; aspect-ratio: 16/9; margin: 20px 0; border-radius: 10px; overflow: hidden; background: #111; border: 1px solid #333; }
+        .trailer-box iframe { width: 100%; height: 100%; border: none; }
 
         .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
         .ator-card { flex: 0 0 auto; width: 70px; text-align: center; }
@@ -99,6 +101,10 @@
 
             <div class="titulo-secao">SINOPSE</div>
             <p id="m-sinopse" style="color:#bbb; font-size: 13px; line-height: 1.6;"></p>
+            
+            <div class="titulo-secao">TRAILER</div>
+            <div class="trailer-box" id="yt-frame"></div>
+
             <div class="titulo-secao">ELENCO</div><div class="elenco-row" id="m-elenco"></div>
             <div class="titulo-secao" style="margin-top:20px;">VOCÊ TAMBÉM PODE GOSTAR</div><div class="carrossel" id="m-rec"></div>
         </div>
@@ -129,8 +135,7 @@
             const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=${d.toISOString().split('T')[0]}&sort_by=popularity.desc`);
             preencher('lista-estreias', estreias.results, true);
             
-            // TRASH - Somente os Clássicos por Nome
-            const trashNomes = ["Friday the 13th", "A Nightmare on Elm Street", "Child's Play", "Halloween", "It", "Hellraiser", "The Texas Chain Saw Massacre"];
+            const trashNomes = ["Friday the 13th", "A Nightmare on Elm Street", "Child's Play", "Halloween", "Hellraiser", "The Texas Chain Saw Massacre"];
             let trashData = [];
             for (let nome of trashNomes) {
                 const s = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(nome)}`);
@@ -153,7 +158,7 @@
             document.getElementById('overlay').style.display = 'block';
             document.body.style.overflow = 'hidden';
             
-            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=credits,recommendations`);
+            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=credits,recommendations,videos`);
             
             document.getElementById('m-nome').innerText = d.title;
             document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
@@ -181,6 +186,9 @@
                 b_mx.classList.remove('btn-desabilitado');
                 b_mx.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
             }
+
+            const trailer = d.videos.results.find(v => v.type === 'Trailer' || v.type === 'Teaser');
+            document.getElementById('yt-frame').innerHTML = trailer ? `<iframe src="https://www.youtube.com/embed/${trailer.key}?rel=0" allowfullscreen></iframe>` : '<p style="text-align:center; padding:20px; color:#666;">Trailer não disponível.</p>';
 
             document.getElementById('m-elenco').innerHTML = d.credits.cast.slice(0,10).map(a => `<div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/60'"><p>${a.name}</p></div>`).join('');
             document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,10).map(f => `<div class="card" onclick="abrir(${f.id}, false)"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}"><p>${f.title}</p></div>`).join('');
