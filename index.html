@@ -3,71 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cine Mega - Oficial</title>
+    <title>Cine Mega - Oficial | Assista Filmes e Séries Online</title>
     
+    <meta name="description" content="O melhor indexador de filmes e séries. Assista agora no Cine Mega com qualidade VIP.">
+    <meta name="keywords" content="filmes online, assistir series, cine mega, cinema vips">
+    <meta name="author" content="Eric Dimitri">
+    <meta name="robots" content="index, follow">
+
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; width: 100%; min-height: 100%; }
+        html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; width: 100%; }
         body { padding-top: 110px; overflow-x: hidden; }
 
         .header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.96); padding: 15px; z-index: 1000; border-bottom: 2px solid #e50914; backdrop-filter: blur(10px); }
         .logo { color: #e50914; font-weight: 900; font-size: 22px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 3px; cursor: pointer; }
         #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; }
 
-        .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; margin-bottom: 10px; }
+        .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; }
         #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 1.5s; display: flex; align-items: flex-end; }
         .hero-info { background: linear-gradient(to top, #000, transparent); width: 100%; padding: 40px 20px; }
         .hero-info h2 { margin: 0; font-size: 26px; font-weight: 800; text-shadow: 2px 2px 10px #000; }
 
-        .secao { padding: 0 0 20px 15px; margin-bottom: 20px; width: 100%; }
+        .secao { padding: 20px 0 10px 15px; }
         .titulo-secao { font-size: 15px; font-weight: bold; color: #ffcc00; margin-bottom: 10px; border-left: 4px solid #e50914; padding-left: 12px; text-transform: uppercase; }
         
-        /* 🚀 DESTRAVA TOTAL DO CARROSSEL HORIZONTAL */
+        /* CARROSSEL DESTRAVADO (SEM ADS POR CIMA) */
         .carrossel { 
             display: flex; 
-            flex-wrap: nowrap; 
             overflow-x: auto; 
-            overflow-y: hidden; 
             gap: 12px; 
-            padding: 5px 0 15px 0;
+            padding-bottom: 15px; 
             scrollbar-width: none; 
             -webkit-overflow-scrolling: touch; 
-            width: 100%;
-            touch-action: pan-x;
-            scroll-snap-type: x proximity; /* Ajuda a deslizar e parar no lugar certo */
-            pointer-events: auto; /* Garante que o toque funcione */
         }
         .carrossel::-webkit-scrollbar { display: none; }
         
-        .card { flex: 0 0 auto; width: 115px; cursor: pointer; scroll-snap-align: start; }
-        .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; display: block; pointer-events: none; }
+        .card { flex: 0 0 auto; width: 115px; cursor: pointer; }
+        .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; }
         .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
-        /* OVERLAY COM DESTRAVA DE ROLAGEM */
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
-        
+        /* OVERLAY - TRATADO COMO UMA NOVA PÁGINA */
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: auto; -webkit-overflow-scrolling: touch; }
         .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
-        .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; z-index: 3000; }
-        .corpo-detalhes { padding: 20px; margin-top: -60px; background: #000; border-radius: 40px 40px 0 0; position: relative; z-index: 2100; min-height: 100vh; }
+        .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; }
+        .corpo-detalhes { padding: 20px; margin-top: -60px; background: #000; border-radius: 40px 40px 0 0; position: relative; }
         
-        .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; box-shadow: 0 0 30px #000; object-fit: cover; z-index: 2900; background: #111; }
+        .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; object-fit: cover; box-shadow: 0 0 20px #000; }
         
-        .btn-play-web { width: 100%; background: linear-gradient(45deg, #e50914, #8b0000); color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; border: none; margin-bottom: 10px; cursor: pointer; text-transform: uppercase; }
-        .btn-ad-apoio { width: 100%; background: #222; color: #aaa; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 12px; border: 1px solid #333; margin-bottom: 20px; cursor: pointer; text-transform: uppercase; }
+        .btn-play-web { width: 100%; background: linear-gradient(45deg, #e50914, #8b0000); color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; border: none; margin-bottom: 10px; cursor: pointer; }
+        .btn-ad-apoio { width: 100%; background: #222; color: #aaa; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 12px; border: 1px solid #333; margin-bottom: 20px; cursor: pointer; }
+
         .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
-        .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; cursor: pointer; }
-        .btn-morto { background: #222 !important; color: #444 !important; cursor: not-allowed !important; pointer-events: none; opacity: 0.5; }
+        .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; }
 
-        .elenco-row { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x; }
+        .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
         .ator-card { flex: 0 0 auto; width: 70px; text-align: center; }
-        .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; display: block; margin: 0 auto; background: #222; }
-        .ator-card p { font-size: 9px; color: #999; margin-top: 6px; line-height: 1.2; }
+        .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; margin: 0 auto; display: block; }
+        .ator-card p { font-size: 9px; color: #999; margin-top: 5px; }
 
-        .trailer-box { width: 100%; aspect-ratio: 16/9; margin: 20px 0; border-radius: 10px; overflow: hidden; background: #111; border: 1px solid #222; }
+        .trailer-box { width: 100%; aspect-ratio: 16/9; margin: 20px 0; border-radius: 10px; overflow: hidden; background: #111; }
         .trailer-box iframe { width: 100%; height: 100%; border: none; }
 
-        .footer { padding: 40px 20px; background: #0a0a0a; border-top: 1px solid #222; text-align: center; margin-top: 50px; }
-        .footer-logo { color: #e50914; font-weight: 900; font-size: 18px; margin-bottom: 15px; display: block; }
+        .footer { padding: 30px; text-align: center; color: #444; font-size: 12px; }
     </style>
 </head>
 <body oncontextmenu="return false">
@@ -96,12 +93,14 @@
             <div class="titulo-secao">VOCÊ TÁ VELHO, HEIN?</div>
             <div class="carrossel" id="lista-classicos"></div>
         </div>
+        
+        <footer class="footer">CINE MEGA © 2026 - Eric Dimitri</footer>
     </div>
 
-    <div id="busca-content" style="display:none; padding-top: 50px;">
+    <div id="busca-content" style="display:none;">
         <div class="secao">
-            <div class="titulo-secao" id="titulo-busca">RESULTADOS DA BUSCA</div>
-            <div id="lista-busca" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 15px;"></div>
+            <div class="titulo-secao">RESULTADOS</div>
+            <div id="lista-busca" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding-right: 15px;"></div>
         </div>
     </div>
 
@@ -109,45 +108,51 @@
         <div id="m-backdrop" class="backdrop-header"><button class="fechar-btn" onclick="fechar()">✕ VOLTAR</button></div>
         <div class="corpo-detalhes">
             <img id="m-capa" class="capa-mini">
-            <h1 id="m-nome" style="text-align:center; margin: 0 0 10px 0; font-size: 22px;"></h1>
-            <div id="m-meta" style="text-align:center; color:#ffcc00; font-weight:bold; margin-bottom: 25px; font-size: 12px;"></div>
+            <h1 id="m-nome" style="text-align:center; font-size: 22px; margin-bottom: 5px;"></h1>
+            <div id="m-meta" style="text-align:center; color:#ffcc00; font-size: 12px; margin-bottom: 20px;"></div>
             
             <button id="btn-main-play" class="btn-play-web" onclick="abrirPlayer()">▶ REPRODUZIR NO SITE</button>
-            <button class="btn-ad-apoio" onclick="window.open('https://encouragingjawsordinarily.com/ry7p009n?key=95b85148b51ed8b7c922d3349f922a8c', '_blank')">🎁 APOIAR O PROJETO (VER ANÚNCIO)</button>
+            <button class="btn-ad-apoio" onclick="window.open('https://encouragingjawsordinarily.com/ry7p009n?key=95b85148b51ed8b7c922d3349f922a8c', '_blank')">🎁 APOIAR O PROJETO (ADS)</button>
 
             <div class="mini-grid">
                 <button id="vlc-btn" class="btn-mini" style="background:#FF8800">VLC PLAYER</button>
                 <button id="mx-btn" class="btn-mini" style="background:#0052D4">MX PLAYER</button>
             </div>
 
-            <div style="text-align:left;">
-                <div class="titulo-secao">SINOPSE</div>
-                <p id="m-sinopse" style="color:#bbb; font-size: 13px; line-height: 1.6; padding: 10px 0;"></p>
-                <div class="titulo-secao">TRAILER</div>
-                <div class="trailer-box" id="yt-frame"></div>
-                <div class="titulo-secao">ELENCO</div>
-                <div class="elenco-row" id="m-elenco"></div>
-                <div class="titulo-secao" style="margin-top: 15px;">VOCÊ TAMBÉM PODE GOSTAR</div>
-                <div class="carrossel" id="m-rec"></div>
-            </div>
-        </div>
-    </div>
+            <div class="titulo-secao">SINOPSE</div>
+            <p id="m-sinopse" style="color:#bbb; font-size: 13px; line-height: 1.6;"></p>
+            
+            <div class="titulo-secao">TRAILER</div>
+            <div class="trailer-box" id="yt-frame"></div>
+            
+            <div class="titulo-secao">ELENCO</div>
+            <div class="elenco-row" id="m-elenco"></div>
 
-    <footer class="footer">
-        <span class="footer-logo">CINE MEGA</span>
-    </footer>
+            <div class="titulo-secao" style="margin-top:20px;">VOCÊ PODE GOSTAR</div>
+            <div class="carrossel" id="m-rec"></div>
+        </div>
+
+        <div id="ads-container"></div>
+    </div>
 
     <script>
         const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
         const MOTOR = "https://api-scraper-cinema.onrender.com";
         let linkV = "";
 
+        // 🟢 LÓGICA DO GESTO DE VOLTAR (NÃO SAI DO SITE)
+        window.addEventListener('popstate', function (event) {
+            if (document.getElementById('overlay').style.display === 'block') {
+                fecharSilencioso();
+            }
+        });
+
         async function api(url) { const r = await fetch(url); return await r.json(); }
 
-        function preencher(id, dados, isEstreia = false) {
+        function preencher(id, dados) {
             document.getElementById(id).innerHTML = dados.map(f => `
-                <div class="card" onclick="abrir(${f.id}, ${isEstreia})">
-                    <img src="${f.poster_path ? 'https://image.tmdb.org/t/p/w300' + f.poster_path : 'https://via.placeholder.com/300x450?text=CineMega'}">
+                <div class="card" onclick="abrir(${f.id})">
+                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/115x170/111/fff?text=CineMega'">
                     <p>${f.title}</p>
                 </div>
             `).join('');
@@ -156,22 +161,59 @@
         async function loadHome() {
             const pop = await api(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`);
             preencher('lista-populares', pop.results);
-            const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=2026-06-01&sort_by=popularity.desc`);
-            preencher('lista-estreias', estreias.results, true);
-            const trash = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=27,28`);
+            const estreias = await api(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=pt-BR&region=BR`);
+            preencher('lista-estreias', estreias.results);
+            const trash = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=27`);
             preencher('lista-trash', trash.results);
-            const classicos = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&release_date.lte=2000-12-31&sort_by=popularity.desc`);
+            const classicos = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&release_date.lte=1995-01-01&sort_by=popularity.desc`);
             preencher('lista-classicos', classicos.results);
 
-            if(pop.results && pop.results.length > 0) {
-                let i = 0;
-                setInterval(() => {
-                    i = (i + 1) % 5;
-                    const f = pop.results[i];
-                    document.getElementById('hero-banner').style.backgroundImage = `linear-gradient(to top, #000, transparent), url(https://image.tmdb.org/t/p/original${f.backdrop_path})`;
-                    document.getElementById('hero-titulo').innerText = f.title;
-                }, 8000);
+            if(pop.results[0]) {
+                const f = pop.results[0];
+                document.getElementById('hero-banner').style.backgroundImage = `linear-gradient(to top, #000, transparent), url(https://image.tmdb.org/t/p/original${f.backdrop_path})`;
+                document.getElementById('hero-titulo').innerText = f.title;
             }
+        }
+
+        async function abrir(id) {
+            // Empurra um estado no histórico para o botão voltar funcionar
+            history.pushState({page: 'detalhes'}, '');
+            
+            document.getElementById('overlay').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits,recommendations`);
+            
+            document.getElementById('m-nome').innerText = d.title;
+            document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
+            document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
+            document.getElementById('m-sinopse').innerText = d.overview;
+            document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
+            
+            const trailer = d.videos.results.find(v => v.type == 'Trailer');
+            document.getElementById('yt-frame').innerHTML = trailer ? `<iframe src="https://www.youtube.com/embed/${trailer.key}" allowfullscreen></iframe>` : '';
+
+            document.getElementById('m-elenco').innerHTML = d.credits.cast.slice(0,10).map(a => `
+                <div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/60'"><p>${a.name}</p></div>
+            `).join('');
+
+            document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,10).map(f => `
+                <div class="card" onclick="abrir(${f.id})"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}"><p>${f.title}</p></div>
+            `).join('');
+
+            linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
+            
+            // Ativa o Ad da Monetag APENAS quando entra no play
+            document.getElementById('ads-container').innerHTML = `<script>(function(s){s.dataset.zone='10953586',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))<\/script>`;
+        }
+
+        function abrirPlayer() { window.open(linkV, '_blank'); }
+        function fechar() { history.back(); }
+        function fecharSilencioso() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('yt-frame').innerHTML = '';
+            document.getElementById('ads-container').innerHTML = '';
+            document.body.style.overflow = '';
         }
 
         async function realizarBusca() {
@@ -180,58 +222,19 @@
             document.getElementById('busca-content').style.display = 'block';
             const res = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
             document.getElementById('lista-busca').innerHTML = res.results.map(f => `
-                <div class="card" style="width:100%" onclick="abrir(${f.id}, false)">
-                    <img src="${f.poster_path ? 'https://image.tmdb.org/t/p/w300' + f.poster_path : 'https://via.placeholder.com/300x450?text=CineMega'}" style="height:160px">
+                <div class="card" style="width:100%" onclick="abrir(${f.id})">
+                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" style="height:160px">
                     <p>${f.title}</p>
                 </div>
             `).join('');
-            window.scrollTo(0,0);
         }
 
         function voltarHome() {
-            document.getElementById('busca').value = '';
             document.getElementById('home-content').style.display = 'block';
             document.getElementById('busca-content').style.display = 'none';
-            window.scrollTo(0,0);
         }
-
-        async function abrir(id, isEstreia) {
-            document.getElementById('overlay').style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Trava o fundo
-            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits,recommendations`);
-            
-            document.getElementById('m-nome').innerText = d.title;
-            document.getElementById('m-capa').src = d.poster_path ? `https://image.tmdb.org/t/p/w300${d.poster_path}` : '';
-            document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
-            document.getElementById('m-sinopse').innerText = d.overview || "Sem sinopse.";
-            document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
-            
-            const btns = [document.getElementById('btn-main-play'), document.getElementById('vlc-btn'), document.getElementById('mx-btn')];
-            btns.forEach(b => isEstreia ? b.classList.add('btn-morto') : b.classList.remove('btn-morto'));
-
-            const trailer = d.videos.results.find(v => v.type == 'Trailer');
-            document.getElementById('yt-frame').innerHTML = trailer ? `<iframe src="https://www.youtube.com/embed/${trailer.key}" allowfullscreen></iframe>` : '';
-
-            document.getElementById('m-elenco').innerHTML = d.credits.cast.slice(0,10).map(a => `
-                <div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/100'"><p>${a.name}</p></div>
-            `).join('');
-
-            document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,10).map(f => `
-                <div class="card" onclick="abrir(${f.id}, false)"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}"><p>${f.title}</p></div>
-            `).join('');
-
-            linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
-            document.getElementById('vlc-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
-            document.getElementById('mx-btn').onclick = () => window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
-            
-            document.getElementById('overlay').scrollTo(0,0); // Volta pro topo do overlay ao abrir
-        }
-
-        function abrirPlayer() { window.open(linkV, '_blank'); }
-        function fechar() { document.getElementById('overlay').style.display = 'none'; document.body.style.overflow = ''; }
 
         loadHome();
     </script>
-    <script>(function(s){s.dataset.zone='10953586',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 </body>
 </html>
