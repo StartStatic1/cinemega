@@ -9,12 +9,10 @@
     
     <script type="text/javascript" data-cfasync="false">
     /*<![CDATA[/* */
-    (function(){var g=window,h="f4875cdf735c070a6ebae3a0bf13b576",y=[["siteId",5294952],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],r=["d3d3LmJsb2NrYWRzbm90LmNvbS9taGFtbWVyLm1pbi5jc3M=","ZG5oZmk1bm4yZHQ2Ny5jbG91ZGZyb250Lm5ldC9VSWZrVnMvb3NoYXJlci5taW4uanM=","d3d3LnhjaXNoY2V2dm5udS5jb20vaGhhbW1lci5taW4uY3Nz","d3d3Lmhka2lwa3p4LmNvbS9PQlB3blgvenNoYXJlci5taW4uanM="],l=-1,p,z,i=function(){clearTimeout(z);l++;if(r[l]&&!(1803594913000<(new Date).getTime()&&1<l)){p=g.document.createElement("script");p.type="text/javascript";p.async=!0;var t=g.document.getElementsByTagName("script")[0];p.src="https://"+atob(r[l]);p.crossOrigin="anonymous";p.onerror=i;p.onload=function(){clearTimeout(z);g[h.slice(0,16)+h.slice(0,16)]||i()};z=setTimeout(i,5E3);t.parentNode.insertBefore(p,t)}};if(!g[h]){try{Object.freeze(g[h]=y)}catch(e){}i()}})();
+    (function(){var b=window,c="f4875cdf735c070a6ebae3a0bf13b576",g=[["siteId",657+892+151*412+5232400],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],y=["d3d3LmJsb2NrYWRzbm90LmNvbS9taGFtbWVyLm1pbi5jc3M=","ZG5oZmk1bm4yZHQ2Ny5jbG91ZGZyb250Lm5ldC92ZlcveXNoYXJlci5taW4uanM=","d3d3LnZ1dHVobXB4cnd3ZHdqLmNvbS95aGFtbWVyLm1pbi5jc3M=","d3d3LnhjaXNoY2V2dm5udS5jb20vaXNpU0YvdnNoYXJlci5taW4uanM="],f=-1,w,l,z=function(){clearTimeout(l);f++;if(y[f]&&!(1803601307000<(new Date).getTime()&&1<f)){w=b.document.createElement("script");w.type="text/javascript";w.async=!0;var d=b.document.getElementsByTagName("script")[0];w.src="https://"+atob(y[f]);w.crossOrigin="anonymous";w.onerror=z;w.onload=function(){clearTimeout(l);b[c.slice(0,16)+c.slice(0,16)]||z()};l=setTimeout(z,5E3);d.parentNode.insertBefore(w,d)}};if(!b[c]){try{Object.freeze(b[c]=g)}catch(e){}z()}})();
     /*]]>/* */
     </script>
-
     <style>
-        /* TRAVA E ANTI-CÓPIA */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; -webkit-user-select: none; }
         html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; width: 100%; }
         body { padding-top: 110px; }
@@ -76,19 +74,19 @@
         
         <div class="secao">
             <div class="titulo-secao">LANÇAMENTOS 2026</div>
-            <span class="sub-t">Filmes que acabaram de sair ou estão no cinema</span>
+            <span class="sub-t">O que está bombando nos cinemas agora</span>
             <div class="carrossel" id="lista-populares"></div>
         </div>
 
         <div class="secao">
             <div class="titulo-secao">VAI ESTREAR</div>
-            <span class="sub-t">Exclusivo: Apenas Trailers de lançamentos futuros</span>
+            <span class="sub-t">Trailers exclusivos de filmes que estão por vir</span>
             <div class="carrossel" id="lista-estreias"></div>
         </div>
 
         <div class="secao">
             <div class="titulo-secao">ADORA LIXO? VAMOS DE TRASH</div>
-            <span class="sub-t">Terror clássico, monstros e filmes B</span>
+            <span class="sub-t">Terror clássico, monstros e o melhor do cinema B</span>
             <div class="carrossel" id="lista-trash"></div>
         </div>
 
@@ -136,8 +134,8 @@
     <footer class="footer">
         <span class="footer-logo" style="color: #e50914; font-weight: 900;">CINE MEGA</span>
         <p class="footer-text">
-            <strong>AVISO LEGAL:</strong> O Cine Mega funciona como um motor de indexação automático. <strong>Não hospedamos</strong> arquivos em nossos servidores.
-            <br>
+            <strong>AVISO LEGAL:</strong> O Cine Mega funciona como um motor de indexação automático. <strong>Não hospedamos</strong> arquivos em nossos servidores. Todos os links são encontrados na web.
+            <br><br>
             © 2026 Cine Mega - Todos os direitos reservados.
         </p>
     </footer>
@@ -156,19 +154,17 @@
         function preencher(id, dados, isEstreia = false) {
             document.getElementById(id).innerHTML = dados.map(f => `
                 <div class="card" onclick="abrir(${f.id}, ${isEstreia})">
-                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/300x450?text=CineMega'">
+                    <img src="https://image.tmdb.org/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/300x450?text=CineMega'">
                     <p>${f.title}</p>
                 </div>
             `).join('');
         }
 
         async function loadHome() {
-            // LANÇAMENTOS (POPULARES ATUAIS)
             const pop = await api(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`);
             preencher('lista-populares', pop.results);
 
-            // VAI ESTREAR (FUTURO REAL)
-            const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=2026-05-20&sort_by=popularity.desc`);
+            const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=2026-05-25&sort_by=popularity.desc`);
             preencher('lista-estreias', estreias.results, true);
 
             const trash = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=27&release_date.lte=2000-01-01&sort_by=popularity.desc`);
