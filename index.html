@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cine Mega - Oficial | Assista Filmes e Séries Online</title>
+    <title>Cine Mega - Oficial | Filmes e Séries Online</title>
     
-    <meta name="description" content="O melhor indexador de filmes e séries. Assista agora no Cine Mega com qualidade VIP.">
-    <meta name="keywords" content="filmes online, assistir series, cine mega, cinema vips">
-    <meta name="author" content="Eric Dimitri">
+    <meta name="description" content="Cine Mega - Motor de indexação automático. Não hospedamos arquivos, apenas indexamos conteúdo da internet.">
     <meta name="robots" content="index, follow">
 
     <style>
@@ -27,35 +25,28 @@
         .secao { padding: 20px 0 10px 15px; }
         .titulo-secao { font-size: 15px; font-weight: bold; color: #ffcc00; margin-bottom: 10px; border-left: 4px solid #e50914; padding-left: 12px; text-transform: uppercase; }
         
-        /* CARROSSEL DESTRAVADO (SEM ADS POR CIMA) */
-        .carrossel { 
-            display: flex; 
-            overflow-x: auto; 
-            gap: 12px; 
-            padding-bottom: 15px; 
-            scrollbar-width: none; 
-            -webkit-overflow-scrolling: touch; 
-        }
+        .carrossel { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .carrossel::-webkit-scrollbar { display: none; }
         
         .card { flex: 0 0 auto; width: 115px; cursor: pointer; }
         .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; }
         .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
-        /* OVERLAY - TRATADO COMO UMA NOVA PÁGINA */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: auto; -webkit-overflow-scrolling: touch; }
         .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
         .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; }
         .corpo-detalhes { padding: 20px; margin-top: -60px; background: #000; border-radius: 40px 40px 0 0; position: relative; }
         
-        .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; object-fit: cover; box-shadow: 0 0 20px #000; }
+        .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; object-fit: cover; box-shadow: 0 0 20px #000; background: #111; }
         
+        /* ALERTAS E BOTÕES */
+        #aviso-estreia { background: #ffcc00; color: #000; padding: 10px; border-radius: 8px; font-size: 11px; font-weight: 900; text-align: center; margin-bottom: 15px; display: none; }
         .btn-play-web { width: 100%; background: linear-gradient(45deg, #e50914, #8b0000); color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; border: none; margin-bottom: 10px; cursor: pointer; }
         .btn-ad-apoio { width: 100%; background: #222; color: #aaa; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 12px; border: 1px solid #333; margin-bottom: 20px; cursor: pointer; }
+        .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .btn-desabilitado { background: #1a1a1a !important; color: #444 !important; pointer-events: none; opacity: 0.6; }
 
         .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
-        .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; }
-
         .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
         .ator-card { flex: 0 0 auto; width: 70px; text-align: center; }
         .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; margin: 0 auto; display: block; }
@@ -64,7 +55,7 @@
         .trailer-box { width: 100%; aspect-ratio: 16/9; margin: 20px 0; border-radius: 10px; overflow: hidden; background: #111; }
         .trailer-box iframe { width: 100%; height: 100%; border: none; }
 
-        .footer { padding: 30px; text-align: center; color: #444; font-size: 12px; }
+        .footer { padding: 30px; text-align: center; color: #666; font-size: 11px; line-height: 1.6; }
     </style>
 </head>
 <body oncontextmenu="return false">
@@ -94,7 +85,9 @@
             <div class="carrossel" id="lista-classicos"></div>
         </div>
         
-        <footer class="footer">CINE MEGA © 2026 - Eric Dimitri</footer>
+        <footer class="footer">
+            <strong>AVISO LEGAL:</strong> Cine Mega é um motor de indexação automático que apenas aponta para links já disponíveis na web. Não hospedamos nenhum arquivo em nossos servidores.
+        </footer>
     </div>
 
     <div id="busca-content" style="display:none;">
@@ -111,8 +104,10 @@
             <h1 id="m-nome" style="text-align:center; font-size: 22px; margin-bottom: 5px;"></h1>
             <div id="m-meta" style="text-align:center; color:#ffcc00; font-size: 12px; margin-bottom: 20px;"></div>
             
+            <div id="aviso-estreia">🍿 ESTE TÍTULO AINDA NÃO ESTÁ DISPONÍVEL PARA ASSISTIR.</div>
+
             <button id="btn-main-play" class="btn-play-web" onclick="abrirPlayer()">▶ REPRODUZIR NO SITE</button>
-            <button class="btn-ad-apoio" onclick="window.open('https://encouragingjawsordinarily.com/ry7p009n?key=95b85148b51ed8b7c922d3349f922a8c', '_blank')">🎁 APOIAR O PROJETO (ADS)</button>
+            <button class="btn-ad-apoio" onclick="window.open('https://encouragingjawsordinarily.com/ry7p009n?key=95b85148b51ed8b7c922d3349f922a8c', '_blank')">🎁 APOIAR O PROJETO (VER ANÚNCIO)</button>
 
             <div class="mini-grid">
                 <button id="vlc-btn" class="btn-mini" style="background:#FF8800">VLC PLAYER</button>
@@ -128,11 +123,10 @@
             <div class="titulo-secao">ELENCO</div>
             <div class="elenco-row" id="m-elenco"></div>
 
-            <div class="titulo-secao" style="margin-top:20px;">VOCÊ PODE GOSTAR</div>
+            <div class="titulo-secao" style="margin-top:20px;">VOCÊ TAMBÉM PODE GOSTAR</div>
             <div class="carrossel" id="m-rec"></div>
         </div>
-
-        <div id="ads-container"></div>
+        <div id="monetag-box"></div>
     </div>
 
     <script>
@@ -140,18 +134,15 @@
         const MOTOR = "https://api-scraper-cinema.onrender.com";
         let linkV = "";
 
-        // 🟢 LÓGICA DO GESTO DE VOLTAR (NÃO SAI DO SITE)
         window.addEventListener('popstate', function (event) {
-            if (document.getElementById('overlay').style.display === 'block') {
-                fecharSilencioso();
-            }
+            if (document.getElementById('overlay').style.display === 'block') { fecharSilencioso(); }
         });
 
         async function api(url) { const r = await fetch(url); return await r.json(); }
 
-        function preencher(id, dados) {
+        function preencher(id, dados, estreando = false) {
             document.getElementById(id).innerHTML = dados.map(f => `
-                <div class="card" onclick="abrir(${f.id})">
+                <div class="card" onclick="abrir(${f.id}, ${estreando})">
                     <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/115x170/111/fff?text=CineMega'">
                     <p>${f.title}</p>
                 </div>
@@ -162,7 +153,7 @@
             const pop = await api(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`);
             preencher('lista-populares', pop.results);
             const estreias = await api(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=pt-BR&region=BR`);
-            preencher('lista-estreias', estreias.results);
+            preencher('lista-estreias', estreias.results, true);
             const trash = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=27`);
             preencher('lista-trash', trash.results);
             const classicos = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&release_date.lte=1995-01-01&sort_by=popularity.desc`);
@@ -175,10 +166,8 @@
             }
         }
 
-        async function abrir(id) {
-            // Empurra um estado no histórico para o botão voltar funcionar
+        async function abrir(id, isEstreia) {
             history.pushState({page: 'detalhes'}, '');
-            
             document.getElementById('overlay').style.display = 'block';
             document.body.style.overflow = 'hidden';
             
@@ -187,24 +176,51 @@
             document.getElementById('m-nome').innerText = d.title;
             document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
             document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
-            document.getElementById('m-sinopse').innerText = d.overview;
+            document.getElementById('m-sinopse').innerText = d.overview || "Sinopse não disponível.";
             document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
             
-            const trailer = d.videos.results.find(v => v.type == 'Trailer');
-            document.getElementById('yt-frame').innerHTML = trailer ? `<iframe src="https://www.youtube.com/embed/${trailer.key}" allowfullscreen></iframe>` : '';
+            // LÓGICA VAI ESTREAR
+            const aviso = document.getElementById('aviso-estreia');
+            const b_play = document.getElementById('btn-main-play');
+            const b_vlc = document.getElementById('vlc-btn');
+            const b_mx = document.getElementById('mx-btn');
+
+            if(isEstreia) {
+                aviso.style.display = 'block';
+                b_play.classList.add('btn-desabilitado');
+                b_vlc.classList.add('btn-desabilitado');
+                b_mx.classList.add('btn-desabilitado');
+            } else {
+                aviso.style.display = 'none';
+                b_play.classList.remove('btn-desabilitado');
+                b_vlc.classList.remove('btn-desabilitado');
+                b_mx.classList.remove('btn-desabilitado');
+            }
+
+            const trailer = d.videos.results.find(v => v.type == 'Trailer' || v.type == 'Teaser');
+            document.getElementById('yt-frame').innerHTML = trailer ? `<iframe src="https://www.youtube.com/embed/${trailer.key}?rel=0" allowfullscreen></iframe>` : '';
 
             document.getElementById('m-elenco').innerHTML = d.credits.cast.slice(0,10).map(a => `
                 <div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/60'"><p>${a.name}</p></div>
             `).join('');
 
             document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,10).map(f => `
-                <div class="card" onclick="abrir(${f.id})"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}"><p>${f.title}</p></div>
+                <div class="card" onclick="abrir(${f.id}, false)"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}"><p>${f.title}</p></div>
             `).join('');
 
             linkV = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
             
-            // Ativa o Ad da Monetag APENAS quando entra no play
-            document.getElementById('ads-container').innerHTML = `<script>(function(s){s.dataset.zone='10953586',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))<\/script>`;
+            // CONFIG BOTÕES VLC E MX
+            b_vlc.onclick = () => { if(!isEstreia) window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`; };
+            b_mx.onclick = () => { if(!isEstreia) window.location.href = `intent://${linkV.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`; };
+
+            // CARREGA MONETAG NO INTERIOR
+            const m_box = document.getElementById('monetag-box');
+            m_box.innerHTML = '';
+            const scr = document.createElement('script');
+            scr.dataset.zone = '10953586';
+            scr.src = 'https://al5sm.com/tag.min.js';
+            m_box.appendChild(scr);
         }
 
         function abrirPlayer() { window.open(linkV, '_blank'); }
@@ -212,7 +228,6 @@
         function fecharSilencioso() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('yt-frame').innerHTML = '';
-            document.getElementById('ads-container').innerHTML = '';
             document.body.style.overflow = '';
         }
 
@@ -222,7 +237,7 @@
             document.getElementById('busca-content').style.display = 'block';
             const res = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
             document.getElementById('lista-busca').innerHTML = res.results.map(f => `
-                <div class="card" style="width:100%" onclick="abrir(${f.id})">
+                <div class="card" style="width:100%" onclick="abrir(${f.id}, false)">
                     <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" style="height:160px">
                     <p>${f.title}</p>
                 </div>
