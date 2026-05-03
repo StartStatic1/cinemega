@@ -112,8 +112,8 @@
 
     <script>
         const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
-        // ATUALIZADO PARA O SEU KOYEB QUE ESTÁ ONLINE
-        const MOTOR = "https://api-scraper-cinema.koyeb.app"; 
+        // MOTOR MANTIDO NO RENDER CONFORME SEU ORIGINAL
+        const MOTOR = "https://api-scraper-cinema.onrender.com"; 
 
         window.addEventListener('popstate', () => { if (document.getElementById('overlay').style.display === 'block') { fecharSilencioso(); } });
 
@@ -173,23 +173,23 @@
             const b_mx = document.getElementById('mx-btn');
             
             const hoje = new Date().toISOString().split('T')[0];
-            // Sniper: Título + Ano para precisão total
+            // Sniper: Título + Ano para o Render não errar
             const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title + ' ' + d.release_date.split('-')[0])}`;
 
             if(isEstreia && d.release_date > hoje) {
                 aviso.style.display = 'block';
-                [b_play, b_vlc, b_mx].forEach(b => { b.classList.add('btn-desabilitated'); b.onclick = (e) => e.preventDefault(); });
+                [b_play, b_vlc, b_mx].forEach(b => { b.classList.add('btn-desabilitado'); b.onclick = (e) => e.preventDefault(); });
             } else {
                 aviso.style.display = 'none';
                 b_play.classList.remove('btn-desabilitado');
                 
-                // MUDANÇA PARA FORÇAR O PLAYER: window.open impede o download forçado em muitos casos
+                // MÁGICA PARA FORÇAR O PLAYER EM VEZ DE DOWNLOAD
                 b_play.onclick = (e) => { 
                     e.preventDefault();
                     window.open(motorLink, '_blank'); 
                 };
 
-                // Intents configurados para vídeo
+                // Intents configurados para vídeo nativo
                 const intentLink = motorLink.replace(/https?:\/\//, '');
                 b_vlc.href = `intent://${intentLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=org.videolan.vlc;end`;
                 b_mx.href = `intent://${intentLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=com.mxtech.videoplayer.ad;end`;
