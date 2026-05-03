@@ -92,7 +92,7 @@
             
             <div id="aviso-estreia">🍿 ESTE TÍTULO AINDA NÃO ESTÁ DISPONÍVEL.</div>
             
-            <a id="btn-main-play" class="btn-play-web" href="#">▶ REPRODUZIR NO SITE</a>
+            <a id="btn-main-play" class="btn-play-web" href="#" target="_blank" rel="noopener noreferrer">▶ REPRODUZIR NO SITE</a>
             
             <div class="mini-grid">
                 <a id="vlc-btn" class="btn-mini" style="background:#FF8800" href="#">VLC PLAYER</a>
@@ -112,8 +112,7 @@
 
     <script>
         const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
-        // MOTOR MANTIDO NO RENDER CONFORME SEU ORIGINAL
-        const MOTOR = "https://api-scraper-cinema.onrender.com"; 
+        const MOTOR = "https://api-scraper-cinema.onrender.com";
 
         window.addEventListener('popstate', () => { if (document.getElementById('overlay').style.display === 'block') { fecharSilencioso(); } });
 
@@ -165,7 +164,9 @@
             document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
             document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
             document.getElementById('m-sinopse').innerText = d.overview || "Sinopse não disponível.";
-            document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
+            
+            const ano = d.release_date.split('-')[0];
+            document.getElementById('m-meta').innerText = `${ano} | ⭐ ${d.vote_average.toFixed(1)}`;
             
             const aviso = document.getElementById('aviso-estreia');
             const b_play = document.getElementById('btn-main-play');
@@ -173,26 +174,21 @@
             const b_mx = document.getElementById('mx-btn');
             
             const hoje = new Date().toISOString().split('T')[0];
-            // Sniper: Título + Ano para o Render não errar
-            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title + ' ' + d.release_date.split('-')[0])}`;
+            
+            // BUSCA PRECISA: Título + Ano (ajuda a achar o link correto)
+            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title + ' ' + ano)}`;
 
             if(isEstreia && d.release_date > hoje) {
                 aviso.style.display = 'block';
-                [b_play, b_vlc, b_mx].forEach(b => { b.classList.add('btn-desabilitado'); b.onclick = (e) => e.preventDefault(); });
+                [b_play, b_vlc, b_mx].forEach(b => { b.classList.add('btn-desabilitado'); b.href = "#"; });
             } else {
                 aviso.style.display = 'none';
                 b_play.classList.remove('btn-desabilitado');
-                
-                // MÁGICA PARA FORÇAR O PLAYER EM VEZ DE DOWNLOAD
-                b_play.onclick = (e) => { 
-                    e.preventDefault();
-                    window.open(motorLink, '_blank'); 
-                };
-
-                // Intents configurados para vídeo nativo
-                const intentLink = motorLink.replace(/https?:\/\//, '');
-                b_vlc.href = `intent://${intentLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=org.videolan.vlc;end`;
-                b_mx.href = `intent://${intentLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=com.mxtech.videoplayer.ad;end`;
+                b_play.href = motorLink;
+                b_vlc.classList.remove('btn-desabilitado');
+                b_vlc.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
+                b_mx.classList.remove('btn-desabilitado');
+                b_mx.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
             }
 
             const trailer = d.videos.results.find(v => v.type === 'Trailer' || v.type === 'Teaser');
