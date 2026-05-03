@@ -1,3 +1,5 @@
+BACKUP CINEMEGA OFIC NOVO INDEX
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,7 +8,7 @@
     <title>Cine Mega - Oficial</title>
     
     <style>
-        /* PROTEÇÃO TOTAL - MANTIDO ORIGINAL */
+        /* PROTEÇÃO TOTAL */
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
@@ -92,7 +94,7 @@
             
             <div id="aviso-estreia">🍿 ESTE TÍTULO AINDA NÃO ESTÁ DISPONÍVEL.</div>
             
-            <a id="btn-main-play" class="btn-play-web" href="#" target="_blank" rel="noopener noreferrer">▶ REPRODUZIR NO SITE</a>
+            <a id="btn-main-play" class="btn-play-web" href="#">▶ REPRODUZIR NO SITE</a>
             
             <div class="mini-grid">
                 <a id="vlc-btn" class="btn-mini" style="background:#FF8800" href="#">VLC PLAYER</a>
@@ -164,9 +166,7 @@
             document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
             document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
             document.getElementById('m-sinopse').innerText = d.overview || "Sinopse não disponível.";
-            
-            const ano = d.release_date.split('-')[0];
-            document.getElementById('m-meta').innerText = `${ano} | ⭐ ${d.vote_average.toFixed(1)}`;
+            document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
             
             const aviso = document.getElementById('aviso-estreia');
             const b_play = document.getElementById('btn-main-play');
@@ -174,8 +174,6 @@
             const b_mx = document.getElementById('mx-btn');
             
             const hoje = new Date().toISOString().split('T')[0];
-            
-            // O segredo está aqui: enviamos apenas o Título para o seu motor atual
             const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
 
             if(isEstreia && d.release_date > hoje) {
@@ -185,13 +183,10 @@
                 aviso.style.display = 'none';
                 b_play.classList.remove('btn-desabilitado');
                 b_play.href = motorLink;
-                
-                // Configuração para players externos
-                const cleanLink = motorLink.replace(/https?:\/\//,'');
                 b_vlc.classList.remove('btn-desabilitado');
-                b_vlc.href = `intent://${cleanLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=org.videolan.vlc;end`;
+                b_vlc.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
                 b_mx.classList.remove('btn-desabilitado');
-                b_mx.href = `intent://${cleanLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=com.mxtech.videoplayer.ad;end`;
+                b_mx.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
             }
 
             const trailer = d.videos.results.find(v => v.type === 'Trailer' || v.type === 'Teaser');
