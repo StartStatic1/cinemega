@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cine Mega - Oficial</title>
+    <meta name="description" content="Cine Mega Oficial - O melhor motor de indexação automático de filmes e séries grátis. Assista lançamentos, clássicos e muito mais direto do seu player, com alta qualidade e sem propagandas chatas.">
     
     <style>
         /* PROTEÇÃO TOTAL */
@@ -60,10 +61,65 @@
         .ator-card { flex: 0 0 auto; width: 70px; text-align: center; }
         .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; margin: 0 auto; display: block; pointer-events: none; }
 
-        .footer { padding: 30px; text-align: center; color: #444; font-size: 11px; }
+        .footer { padding: 40px 20px; text-align: center; color: #777; font-size: 12px; background: #0a0a0a; border-top: 1px solid #222; margin-top: 30px; }
+        .footer strong { color: #e50914; font-size: 16px; letter-spacing: 1px; }
+
+        /* ======== ESTILOS DO POPUP PIX ======== */
+        #pix-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 9999;
+            display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .pix-container {
+            background: #111; border: 2px solid #e50914; border-radius: 20px;
+            padding: 30px 20px; width: 90%; max-width: 350px; text-align: center;
+            position: relative; 
+            /* Efeito pulsante que chama atenção discretamente */
+            animation: brilho-pix 2s infinite;
+        }
+        @keyframes brilho-pix {
+            0% { box-shadow: 0 0 10px rgba(229, 9, 20, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(229, 9, 20, 0.7); }
+            100% { box-shadow: 0 0 10px rgba(229, 9, 20, 0.3); }
+        }
+        .pix-close {
+            position: absolute; top: 12px; right: 15px; background: transparent;
+            border: none; color: #888; font-size: 20px; font-weight: bold; cursor: pointer;
+        }
+        .pix-title { color: #ffcc00; font-size: 18px; font-weight: 900; margin-bottom: 10px; }
+        .pix-desc { color: #ddd; font-size: 13px; line-height: 1.5; margin-bottom: 20px; }
+        .pix-box-chave {
+            background: #000; padding: 12px; border-radius: 10px;
+            border: 1px dashed #555; font-family: monospace; font-size: 18px;
+            color: #fff; margin-bottom: 15px; letter-spacing: 2px; font-weight: bold;
+        }
+        .btn-copiar {
+            background: #e50914; color: #fff; border: none; padding: 12px 20px; width: 100%;
+            border-radius: 50px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+            font-size: 13px; transition: 0.3s;
+        }
+        .pix-footer-msg { font-size: 11px; color: #888; margin-top: 15px; }
     </style>
 </head>
 <body oncontextmenu="return false">
+
+    <div id="pix-modal">
+        <div class="pix-container">
+            <button class="pix-close" onclick="fecharModalPix()">✕</button>
+            <div class="pix-title">💖 AJUDE O CINE MEGA!</div>
+            <div class="pix-desc">
+                Quer manter o site <strong>sempre online</strong>, rápido e sem aquelas propagandas chatas?<br>
+                Qualquer ajuda será bem-vinda!
+            </div>
+            <div style="font-size: 12px; color: #aaa; margin-bottom: 5px;">Chave Pix (Celular):</div>
+            
+            <div class="pix-box-chave">849****5659</div>
+            
+            <button class="btn-copiar" id="btn-copiar-pix" onclick="copiarChave()">COPIAR CHAVE PIX</button>
+            <div class="pix-footer-msg">Envie o comprovante no nosso grupo VIP!</div>
+        </div>
+    </div>
 
     <div class="header">
         <div class="logo" onclick="voltarHome()">CINE MEGA</div>
@@ -76,7 +132,12 @@
         <div class="secao"><div class="titulo-secao">VAI ESTREAR</div><div class="carrossel" id="lista-estreias"></div></div>
         <div class="secao"><div class="titulo-secao">TRASH (ÍCONES DO TERROR)</div><div class="carrossel" id="lista-trash"></div></div>
         <div class="secao"><div class="titulo-secao">VOCÊ TÁ VELHO, HEIN?</div><div class="carrossel" id="lista-classicos"></div></div>
-        <footer class="footer"><strong>AVISO LEGAL:</strong> Cine Mega é um motor de indexação automático.</footer>
+        
+        <footer class="footer">
+            <strong>CINE MEGA OFICIAL</strong><br>
+            <span style="display:block; margin:10px 0; color:#aaa; line-height: 1.5;">O maior e melhor acervo de filmes e séries com indexação automática. Assista os grandes lançamentos, clássicos do cinema e séries populares com qualidade e sem propagandas abusivas.</span>
+            <span style="font-size: 10px; color:#555;">AVISO LEGAL: Cine Mega é um motor de indexação automático. Não armazenamos vídeos em nossos servidores.</span>
+        </footer>
     </div>
 
     <div id="busca-content" style="display:none; padding-top: 20px;">
@@ -111,6 +172,36 @@
     </div>
 
     <script>
+        // ======== LÓGICA DO POPUP PIX ========
+        window.addEventListener('DOMContentLoaded', () => {
+            // Verifica na sessão. Se ele fechar a aba e abrir de novo, vai mostrar.
+            if (!sessionStorage.getItem('cineMegaPixMostrado')) {
+                setTimeout(() => {
+                    document.getElementById('pix-modal').style.display = 'flex';
+                }, 1500); // 1.5 segundos após carregar o site ele sobe
+            }
+        });
+
+        function fecharModalPix() {
+            document.getElementById('pix-modal').style.display = 'none';
+            sessionStorage.setItem('cineMegaPixMostrado', 'true');
+        }
+
+        function copiarChave() {
+            const chaveReal = "84999585659";
+            navigator.clipboard.writeText(chaveReal).then(() => {
+                const btn = document.getElementById('btn-copiar-pix');
+                btn.innerText = "CHAVE COPIADA! ✓";
+                btn.style.background = "#28a745"; // Fica verde
+                
+                setTimeout(() => {
+                    btn.innerText = "COPIAR CHAVE PIX";
+                    btn.style.background = "#e50914"; // Volta ao vermelho
+                }, 3000);
+            });
+        }
+        // =====================================
+
         const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
         const MOTOR = "https://api-scraper-cinema.onrender.com";
 
