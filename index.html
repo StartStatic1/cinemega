@@ -1,30 +1,28 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cine Mega - Oficial</title>
-    <meta name="description" content="Cine Mega Oficial - Assista filmes, lançamentos e clássicos com qualidade VIP, sem anúncios e com motor de busca inteligente.">
+    <meta name="description" content="Cine Mega Oficial - Assista a filmes online, lançamentos e clássicos com a melhor qualidade e totalmente sem propagandas chatas. O melhor catálogo VIP na sua mão.">
     
     <style>
         /* PROTEÇÃO TOTAL */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            outline: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
         html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; width: 100%; height: 100%; }
         body { padding-top: 110px; overflow-y: scroll; }
 
         .header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); padding: 15px; z-index: 1000; border-bottom: 2px solid #e50914; backdrop-filter: blur(10px); }
-        .logo { color: #e50914; font-weight: 900; font-size: 22px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 3px; cursor: pointer; transition: 0.3s; }
-        .logo:active { transform: scale(0.95); opacity: 0.7; }
-        
+        .logo { color: #e50914; font-weight: 900; font-size: 22px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 3px; cursor: pointer; }
         #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; -webkit-user-select: text; user-select: text; }
-
-        .banner-apoio { background: linear-gradient(90deg, #1a1a1a, #000); border: 1px solid #e50914; border-radius: 12px; margin: 10px 15px 20px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; animation: slideDown 0.8s ease-out; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.2); }
-        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .texto-apoio { font-size: 13px; color: #ccc; line-height: 1.4; flex: 1; }
-        .texto-apoio strong { color: #ffcc00; }
-        .btn-pix-curto { background: #e50914; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; white-space: nowrap; transition: 0.3s; }
-        .btn-pix-curto:active { transform: scale(0.9); }
-        .fechar-banner { color: #666; background: none; border: none; font-size: 18px; cursor: pointer; padding: 0 5px; }
 
         .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; }
         #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 1.5s; display: flex; align-items: flex-end; }
@@ -63,23 +61,68 @@
         .ator-card { flex: 0 0 auto; width: 70px; text-align: center; }
         .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; margin: 0 auto; display: block; pointer-events: none; }
 
-        .footer { padding: 30px; text-align: center; color: #555; font-size: 12px; border-top: 1px solid #111; margin-top: 20px; line-height: 1.6; }
+        .footer { padding: 30px; text-align: center; color: #666; font-size: 12px; line-height: 1.5; border-top: 1px solid #222; margin-top: 20px; }
+        
+        /* CSS DA POPUP DE DOAÇÃO */
+        .popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 5000;
+            display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .popup-box {
+            background: #111; border: 2px solid #e50914;
+            border-radius: 20px; padding: 30px 20px; width: 90%; max-width: 350px;
+            text-align: center; position: relative;
+            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.4);
+            animation: pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .fechar-popup {
+            position: absolute; top: -15px; right: -15px;
+            background: #e50914; color: #fff; border: 2px solid #111;
+            width: 40px; height: 40px; border-radius: 50%;
+            font-weight: bold; font-size: 18px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .popup-box h3 { color: #ffcc00; margin-top: 0; font-size: 22px; margin-bottom: 15px; }
+        .popup-box p { color: #ddd; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+        .btn-pix {
+            background: #e50914; color: #fff; border: none; padding: 15px 20px;
+            border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer;
+            width: 100%; text-transform: uppercase; letter-spacing: 1px;
+            animation: pulse-pix 2s infinite;
+        }
+        @keyframes pulse-pix {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(229, 9, 20, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 9, 20, 0); }
+        }
+        .dica-pix { font-size: 12px !important; color: #888 !important; margin-top: 15px !important; margin-bottom: 0 !important; font-style: italic; }
     </style>
 </head>
 <body oncontextmenu="return false">
 
+    <div id="doacao-popup" class="popup-overlay" style="display:none;">
+        <div class="popup-box">
+            <button class="fechar-popup" onclick="fecharPopup()">✕</button>
+            <h3>🍿 Ajude o Cine Mega!</h3>
+            <p>Este é um projeto independente mantido por <strong>uma pessoa só</strong>. Ajude a manter o site online, rápido e <strong>sem propagandas chatas</strong>!</p>
+            <p>Qualquer valor ajuda a pagar os servidores. Muito obrigado! ❤️</p>
+            <button id="btn-copiar-pix" class="btn-pix" onclick="copiarPix()">📲 COPIAR CHAVE PIX</button>
+            <p class="dica-pix">Mande o comprovante para eu poder agradecer pessoalmente!</p>
+        </div>
+    </div>
+
     <div class="header">
-        <div class="logo" onclick="handleLogoClick()">CINE MEGA</div>
+        <div class="logo" onclick="voltarHome()">CINE MEGA</div>
         <input type="text" id="busca" placeholder="O que vamos assistir?" onkeyup="if(event.key === 'Enter') realizarBusca()">
     </div>
 
     <div id="home-content">
-        <div id="apoio-banner" class="banner-apoio" style="display:none;">
-            <div class="texto-apoio">🍿 <strong>Ajude o Projeto!</strong> Sem anúncios e mantido por uma só pessoa. Qualquer valor via Pix ajuda muito!</div>
-            <button class="btn-pix-curto" onclick="copiarPix()">COPIAR PIX</button>
-            <button class="fechar-banner" onclick="fecharBanner()">✕</button>
-        </div>
-
         <div class="hero-container"><div id="hero-banner"><div class="hero-info"><h2 id="hero-titulo">Carregando...</h2></div></div></div>
         <div class="secao"><div class="titulo-secao">MAIS ASSISTIDOS</div><div class="carrossel" id="lista-populares"></div></div>
         <div class="secao"><div class="titulo-secao">VAI ESTREAR</div><div class="carrossel" id="lista-estreias"></div></div>
@@ -87,9 +130,9 @@
         <div class="secao"><div class="titulo-secao">VOCÊ TÁ VELHO, HEIN?</div><div class="carrossel" id="lista-classicos"></div></div>
         
         <footer class="footer">
-            <strong style="color:#e50914; font-size: 14px;">CINE MEGA OFICIAL</strong><br>
-            O melhor catálogo de filmes online, lançamentos e clássicos indexados automaticamente.<br>
-            Projeto independente focado em qualidade e velocidade.
+            <strong style="color: #e50914; font-size: 14px;">CINE MEGA - O SEU CATÁLOGO VIP</strong><br><br>
+            Assista aos melhores lançamentos, clássicos e sucessos online e sem propagandas chatas. <br>
+            Cine Mega é um motor de indexação automático.
         </footer>
     </div>
 
@@ -166,9 +209,8 @@
                 document.getElementById('hero-titulo').innerText = f.title;
             }
 
-            if (!sessionStorage.getItem('cineMegaApoio')) {
-                setTimeout(() => { document.getElementById('apoio-banner').style.display = 'flex'; }, 1500);
-            }
+            // MESTRE: A POPUP É CHAMADA ASSIM QUE A TELA INICIAL CARREGA
+            mostrarPopup();
         }
 
         async function abrir(id, isEstreia) {
@@ -182,31 +224,27 @@
             document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
             document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
             document.getElementById('m-sinopse').innerText = d.overview || "Sinopse não disponível.";
-            
-            // Tratamento SEGURO do Ano e Nota para não bugar filmes velhos/sem ano
-            const ano = (d.release_date && d.release_date.length > 3) ? d.release_date.split('-')[0] : '';
-            const nota = d.vote_average ? d.vote_average.toFixed(1) : '0.0';
-            document.getElementById('m-meta').innerText = ano ? `${ano} | ⭐ ${nota}` : `⭐ ${nota}`;
+            document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
             
             const aviso = document.getElementById('aviso-estreia');
             const b_play = document.getElementById('btn-main-play');
+            const b_vlc = document.getElementById('vlc-btn');
+            const b_mx = document.getElementById('mx-btn');
             
             const hoje = new Date().toISOString().split('T')[0];
-            const termoBusca = ano ? `${d.title} ${ano}` : d.title;
-            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(termoBusca)}`;
+            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
 
             if(isEstreia && d.release_date > hoje) {
                 aviso.style.display = 'block';
-                b_play.classList.add('btn-desabilitado');
-                b_play.onclick = (e) => e.preventDefault();
+                [b_play, b_vlc, b_mx].forEach(b => { b.classList.add('btn-desabilitado'); b.href = "#"; });
             } else {
                 aviso.style.display = 'none';
                 b_play.classList.remove('btn-desabilitado');
-                b_play.onclick = () => { window.open(motorLink, '_blank'); };
-
-                const intentLink = motorLink.replace(/https?:\/\//,'');
-                document.getElementById('vlc-btn').href = `intent://${intentLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=org.videolan.vlc;end`;
-                document.getElementById('mx-btn').href = `intent://${intentLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=com.mxtech.videoplayer.ad;end`;
+                b_play.href = motorLink;
+                b_vlc.classList.remove('btn-desabilitado');
+                b_vlc.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
+                b_mx.classList.remove('btn-desabilitado');
+                b_mx.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
             }
 
             const trailer = d.videos.results.find(v => v.type === 'Trailer' || v.type === 'Teaser');
@@ -222,30 +260,44 @@
         function fechar() { history.back(); }
         function voltarHome() { window.location.reload(); }
 
-        let clickCount = 0; let lastClickTime = 0;
-        function handleLogoClick() {
-            const now = Date.now();
-            if (now - lastClickTime < 500) clickCount++; else clickCount = 1;
-            lastClickTime = now;
-            if (clickCount === 5) {
-                alert("🚀 Sincronizando Acervo Pessoal...");
-                fetch(`${MOTOR}/atualizar`).then(r => r.json()).then(d => alert("✅ " + d.mensagem)).catch(() => alert("❌ Erro de conexão."));
-                clickCount = 0;
-            }
-        }
-
-        function fecharBanner() { document.getElementById('apoio-banner').style.display = 'none'; sessionStorage.setItem('cineMegaApoio', 'true'); }
-        
-        function copiarPix() {
-            navigator.clipboard.writeText("84999585659").then(() => { alert("✅ Chave PIX copiada!"); });
-        }
-
         async function realizarBusca() {
             const q = document.getElementById('busca').value; if(!q) return;
             document.getElementById('home-content').style.display = 'none';
             document.getElementById('busca-content').style.display = 'block';
             const res = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
             document.getElementById('lista-busca').innerHTML = res.results.map(f => `<div class="card" onclick="abrir(${f.id}, false)"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}" style="height:160px"><p>${f.title}</p></div>`).join('');
+        }
+
+        /* --- FUNÇÕES DA POPUP DE DOAÇÃO --- */
+        function mostrarPopup() {
+            // Verifica se o usuário já viu a popup nesta sessão
+            if (!sessionStorage.getItem('popupCineMegaVista')) {
+                document.getElementById('doacao-popup').style.display = 'flex';
+                sessionStorage.setItem('popupCineMegaVista', 'true');
+            }
+        }
+
+        function fecharPopup() {
+            document.getElementById('doacao-popup').style.display = 'none';
+        }
+
+        function copiarPix() {
+            // A Chave PIX fica oculta aqui no código, o usuário não lê antes de copiar
+            const chavePix = '84999585659';
+            navigator.clipboard.writeText(chavePix).then(() => {
+                const btn = document.getElementById('btn-copiar-pix');
+                btn.innerHTML = '✅ CHAVE COPIADA!';
+                btn.style.background = '#28a745'; // Fica verdinho para confirmar
+                btn.style.animation = 'none'; // Para de piscar
+                
+                setTimeout(() => { 
+                    btn.innerHTML = '📲 COPIAR CHAVE PIX'; 
+                    btn.style.background = '#e50914';
+                    btn.style.animation = 'pulse-pix 2s infinite';
+                }, 3000);
+            }).catch(err => {
+                alert('Erro ao copiar chave: ' + chavePix);
+            });
         }
 
         loadHome();
