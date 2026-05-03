@@ -8,15 +8,7 @@
     
     <style>
         /* PROTEÇÃO TOTAL */
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            outline: none;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
         html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; width: 100%; height: 100%; }
         body { padding-top: 110px; overflow-y: scroll; }
 
@@ -26,31 +18,11 @@
         
         #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; -webkit-user-select: text; user-select: text; }
 
-        /* BANNER DE APOIO DISCRETO */
-        .banner-apoio {
-            background: linear-gradient(90deg, #1a1a1a, #000);
-            border: 1px solid #e50914;
-            border-radius: 12px;
-            margin: 10px 15px 20px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            animation: slideDown 0.8s ease-out;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.2);
-        }
-        @keyframes slideDown {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        .banner-apoio { background: linear-gradient(90deg, #1a1a1a, #000); border: 1px solid #e50914; border-radius: 12px; margin: 10px 15px 20px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; animation: slideDown 0.8s ease-out; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.2); }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .texto-apoio { font-size: 13px; color: #ccc; line-height: 1.4; flex: 1; }
         .texto-apoio strong { color: #ffcc00; }
-        .btn-pix-curto {
-            background: #e50914; color: #fff; border: none; padding: 8px 15px;
-            border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer;
-            white-space: nowrap; transition: 0.3s;
-        }
+        .btn-pix-curto { background: #e50914; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; white-space: nowrap; transition: 0.3s; }
         .btn-pix-curto:active { transform: scale(0.9); }
         .fechar-banner { color: #666; background: none; border: none; font-size: 18px; cursor: pointer; padding: 0 5px; }
 
@@ -103,9 +75,7 @@
 
     <div id="home-content">
         <div id="apoio-banner" class="banner-apoio" style="display:none;">
-            <div class="texto-apoio">
-                🍿 <strong>Ajude o Projeto!</strong> Sem anúncios e mantido por uma só pessoa. Qualquer valor via Pix ajuda muito!
-            </div>
+            <div class="texto-apoio">🍿 <strong>Ajude o Projeto!</strong> Sem anúncios e mantido por uma só pessoa. Qualquer valor via Pix ajuda muito!</div>
             <button class="btn-pix-curto" onclick="copiarPix()">COPIAR PIX</button>
             <button class="fechar-banner" onclick="fecharBanner()">✕</button>
         </div>
@@ -196,7 +166,6 @@
                 document.getElementById('hero-titulo').innerText = f.title;
             }
 
-            // Lógica do Banner de Apoio (Exibe 1 vez por sessão)
             if (!sessionStorage.getItem('cineMegaApoio')) {
                 setTimeout(() => { document.getElementById('apoio-banner').style.display = 'flex'; }, 1500);
             }
@@ -213,13 +182,18 @@
             document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
             document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
             document.getElementById('m-sinopse').innerText = d.overview || "Sinopse não disponível.";
-            document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
+            
+            // Tratamento SEGURO do Ano e Nota para não bugar filmes velhos/sem ano
+            const ano = (d.release_date && d.release_date.length > 3) ? d.release_date.split('-')[0] : '';
+            const nota = d.vote_average ? d.vote_average.toFixed(1) : '0.0';
+            document.getElementById('m-meta').innerText = ano ? `${ano} | ⭐ ${nota}` : `⭐ ${nota}`;
             
             const aviso = document.getElementById('aviso-estreia');
             const b_play = document.getElementById('btn-main-play');
             
             const hoje = new Date().toISOString().split('T')[0];
-            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title + ' ' + d.release_date.split('-')[0])}`;
+            const termoBusca = ano ? `${d.title} ${ano}` : d.title;
+            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(termoBusca)}`;
 
             if(isEstreia && d.release_date > hoje) {
                 aviso.style.display = 'block';
@@ -248,9 +222,7 @@
         function fechar() { history.back(); }
         function voltarHome() { window.location.reload(); }
 
-        /* BOTÃO MÁGICO */
-        let clickCount = 0;
-        let lastClickTime = 0;
+        let clickCount = 0; let lastClickTime = 0;
         function handleLogoClick() {
             const now = Date.now();
             if (now - lastClickTime < 500) clickCount++; else clickCount = 1;
@@ -265,8 +237,7 @@
         function fecharBanner() { document.getElementById('apoio-banner').style.display = 'none'; sessionStorage.setItem('cineMegaApoio', 'true'); }
         
         function copiarPix() {
-            const pix = "84999585659";
-            navigator.clipboard.writeText(pix).then(() => { alert("✅ Chave PIX copiada!"); });
+            navigator.clipboard.writeText("84999585659").then(() => { alert("✅ Chave PIX copiada!"); });
         }
 
         async function realizarBusca() {
