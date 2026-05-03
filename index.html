@@ -6,7 +6,7 @@
     <title>Cine Mega - Oficial</title>
     
     <style>
-        /* PROTEÇÃO TOTAL */
+        /* PROTEÇÃO TOTAL - MANTIDO ORIGINAL */
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
@@ -175,8 +175,8 @@
             
             const hoje = new Date().toISOString().split('T')[0];
             
-            // BUSCA PRECISA: Título + Ano (ajuda a achar o link correto)
-            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title + ' ' + ano)}`;
+            // O segredo está aqui: enviamos apenas o Título para o seu motor atual
+            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
 
             if(isEstreia && d.release_date > hoje) {
                 aviso.style.display = 'block';
@@ -185,10 +185,13 @@
                 aviso.style.display = 'none';
                 b_play.classList.remove('btn-desabilitado');
                 b_play.href = motorLink;
+                
+                // Configuração para players externos
+                const cleanLink = motorLink.replace(/https?:\/\//,'');
                 b_vlc.classList.remove('btn-desabilitado');
-                b_vlc.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
+                b_vlc.href = `intent://${cleanLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=org.videolan.vlc;end`;
                 b_mx.classList.remove('btn-desabilitado');
-                b_mx.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
+                b_mx.href = `intent://${cleanLink}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/*;package=com.mxtech.videoplayer.ad;end`;
             }
 
             const trailer = d.videos.results.find(v => v.type === 'Trailer' || v.type === 'Teaser');
