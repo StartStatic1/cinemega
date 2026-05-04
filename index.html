@@ -6,7 +6,7 @@
     <title>Cine Mega - Oficial</title>
     
     <style>
-        /* DESIGN ORIGINAL CINE MEGA */
+        /* PROTEÇÃO TOTAL */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
         html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; width: 100%; height: 100%; }
         body { padding-top: 110px; overflow-y: scroll; }
@@ -16,6 +16,13 @@
         .logo:active { transform: scale(0.95); opacity: 0.7; }
         
         #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; -webkit-user-select: text; user-select: text; }
+
+        /* BANNER PIX DISCRETO */
+        .banner-apoio { background: linear-gradient(90deg, #111, #000); border: 1px solid #e50914; border-radius: 10px; margin: 10px 15px 20px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; animation: slideDown 0.5s ease-out; }
+        @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .texto-apoio { font-size: 12px; color: #ccc; line-height: 1.4; flex: 1; }
+        .btn-pix-curto { background: #e50914; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; white-space: nowrap; }
+        .fechar-banner { color: #666; background: none; border: none; font-size: 16px; cursor: pointer; }
 
         .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; }
         #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 1.5s; display: flex; align-items: flex-end; }
@@ -32,7 +39,6 @@
         .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; pointer-events: none; }
         .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
-        /* OVERLAY DE DETALHES */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
         .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
         .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; z-index: 3001; }
@@ -40,29 +46,44 @@
         
         .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; object-fit: cover; box-shadow: 0 0 20px #000; background: #111; pointer-events: none; }
         
+        #aviso-estreia { background: #ffcc00; color: #000; padding: 10px; border-radius: 8px; font-size: 11px; font-weight: 900; text-align: center; margin-bottom: 15px; display: none; }
+        
         .btn-play-web { display: block; width: 100%; background: #e50914; color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; text-decoration: none; text-align: center; margin-bottom: 15px; text-transform: uppercase; }
         
         .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
         .btn-mini { padding: 12px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 11px; cursor: pointer; text-align: center; text-decoration: none; }
+        .btn-desabilitado { background: #1a1a1a !important; color: #444 !important; pointer-events: none; opacity: 0.6; }
 
         .trailer-box { width: 100%; aspect-ratio: 16/9; margin: 20px 0; border-radius: 10px; overflow: hidden; background: #111; border: 1px solid #333; }
         .trailer-box iframe { width: 100%; height: 100%; border: none; }
 
-        .footer { padding: 30px; text-align: center; color: #666; font-size: 12px; border-top: 1px solid #222; margin-top: 20px; }
+        .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scrollbar-width: none; }
+        .ator-card { flex: 0 0 auto; width: 70px; text-align: center; }
+        .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; margin: 0 auto; display: block; pointer-events: none; }
+
+        .footer { padding: 30px; text-align: center; color: #666; font-size: 12px; line-height: 1.5; border-top: 1px solid #222; margin-top: 20px; }
     </style>
 </head>
 <body oncontextmenu="return false">
 
     <div class="header">
-        <div class="logo" onclick="window.location.reload()">CINE MEGA</div>
+        <div class="logo" onclick="handleLogoClick()">CINE MEGA</div>
         <input type="text" id="busca" placeholder="O que vamos assistir?" onkeyup="if(event.key === 'Enter') realizarBusca()">
     </div>
 
     <div id="home-content">
+        <div id="apoio-banner" class="banner-apoio" style="display:none;">
+            <div class="texto-apoio">🍿 <strong>Ajude o Projeto!</strong> Sem anúncios e mantido por uma só pessoa. Toda ajuda conta!</div>
+            <button class="btn-pix-curto" onclick="copiarPix()">COPIAR PIX</button>
+            <button class="fechar-banner" onclick="fecharBanner()">✕</button>
+        </div>
+
         <div class="hero-container"><div id="hero-banner"><div class="hero-info"><h2 id="hero-titulo">Carregando...</h2></div></div></div>
         <div class="secao"><div class="titulo-secao">MAIS ASSISTIDOS</div><div class="carrossel" id="lista-populares"></div></div>
-        <div class="secao"><div class="titulo-secao">CLÁSSICOS</div><div class="carrossel" id="lista-classicos"></div></div>
-        <footer class="footer"><strong>Cine Mega Oficial</strong> | Motor de indexação automático.</footer>
+        <div class="secao"><div class="titulo-secao">VAI ESTREAR</div><div class="carrossel" id="lista-estreias"></div></div>
+        <div class="secao"><div class="titulo-secao">TRASH (ÍCONES DO TERROR)</div><div class="carrossel" id="lista-trash"></div></div>
+        <div class="secao"><div class="titulo-secao">VOCÊ TÁ VELHO, HEIN?</div><div class="carrossel" id="lista-classicos"></div></div>
+        <footer class="footer"><strong>AVISO LEGAL:</strong> Cine Mega é um motor de indexação automático.</footer>
     </div>
 
     <div id="busca-content" style="display:none; padding-top: 20px;">
@@ -74,8 +95,11 @@
         <div class="corpo-detalhes">
             <img id="m-capa" class="capa-mini">
             <h1 id="m-nome" style="text-align:center; font-size: 22px; margin-bottom: 5px;"></h1>
+            <div id="m-meta" style="text-align:center; color:#ffcc00; font-size: 12px; margin-bottom: 20px;"></div>
             
-            <a id="btn-main-play" class="btn-play-web" href="#" target="_blank">▶ REPRODUZIR AGORA</a>
+            <div id="aviso-estreia">🍿 ESTE TÍTULO AINDA NÃO ESTÁ DISPONÍVEL.</div>
+            
+            <a id="btn-main-play" class="btn-play-web" href="#" target="_blank" rel="noopener noreferrer">▶ REPRODUZIR NO SITE</a>
             
             <div class="mini-grid">
                 <a id="vlc-btn" class="btn-mini" style="background:#FF8800" href="#">VLC PLAYER</a>
@@ -87,19 +111,23 @@
             
             <div class="titulo-secao">TRAILER</div>
             <div class="trailer-box" id="yt-frame"></div>
+
+            <div class="titulo-secao">ELENCO</div><div class="elenco-row" id="m-elenco"></div>
+            <div class="titulo-secao" style="margin-top:20px;">VOCÊ TAMBÉM PODE GOSTAR</div><div class="carrossel" id="m-rec"></div>
         </div>
     </div>
 
     <script>
         const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
-        const MOTOR = "https://api-scraper-cinema.onrender.com"; // RENDER
-        const PLAYER_VIP = "https://startstatic1.github.io/Cine-Mega-player/"; // GITHUB
+        const MOTOR = "https://api-scraper-cinema.onrender.com";
+
+        window.addEventListener('popstate', () => { if (document.getElementById('overlay').style.display === 'block') { fecharSilencioso(); } });
 
         async function api(url) { const r = await fetch(url); return await r.json(); }
 
-        function preencher(id, dados) {
+        function preencher(id, dados, estreando = false) {
             document.getElementById(id).innerHTML = dados.map(f => `
-                <div class="card" onclick="abrir(${f.id})">
+                <div class="card" onclick="abrir(${f.id}, ${estreando})">
                     <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/115x170/111/fff?text=CineMega'">
                     <p>${f.title}</p>
                 </div>
@@ -110,6 +138,18 @@
             const pop = await api(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`);
             preencher('lista-populares', pop.results);
             
+            const d = new Date(); d.setMonth(d.getMonth() + 1);
+            const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=${d.toISOString().split('T')[0]}&sort_by=popularity.desc`);
+            preencher('lista-estreias', estreias.results, true);
+            
+            const trashNomes = ["Friday the 13th", "A Nightmare on Elm Street", "Child's Play", "Halloween", "Hellraiser", "The Texas Chain Saw Massacre"];
+            let trashData = [];
+            for (let nome of trashNomes) {
+                const s = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(nome)}`);
+                if(s.results[0]) trashData.push(s.results[0]);
+            }
+            preencher('lista-trash', trashData.sort(() => Math.random() - 0.5));
+            
             const classicos = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&release_date.lte=1998-01-01&sort_by=vote_count.desc`);
             preencher('lista-classicos', classicos.results);
 
@@ -118,42 +158,80 @@
                 document.getElementById('hero-banner').style.backgroundImage = `linear-gradient(to top, #000, transparent), url(https://image.tmdb.org/t/p/original${f.backdrop_path})`;
                 document.getElementById('hero-titulo').innerText = f.title;
             }
+
+            if (!sessionStorage.getItem('cineMegaApoioBanner')) {
+                setTimeout(() => { document.getElementById('apoio-banner').style.display = 'flex'; }, 1500);
+            }
         }
 
-        async function abrir(id) {
+        async function abrir(id, isEstreia) {
+            history.pushState({page: 'detalhes'}, '');
             document.getElementById('overlay').style.display = 'block';
             document.body.style.overflow = 'hidden';
             
-            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos`);
+            const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=credits,recommendations,videos`);
             
             document.getElementById('m-nome').innerText = d.title;
             document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
             document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
             document.getElementById('m-sinopse').innerText = d.overview || "Sinopse não disponível.";
+            document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
             
-            // LÓGICA DO MOTOR
-            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
-            
-            // BOTÃO PRINCIPAL (PLAYER VIP)
+            const aviso = document.getElementById('aviso-estreia');
             const b_play = document.getElementById('btn-main-play');
-            b_play.href = `${PLAYER_VIP}?video=${encodeURIComponent(motorLink)}`;
+            const b_vlc = document.getElementById('vlc-btn');
+            const b_mx = document.getElementById('mx-btn');
             
-            // BOTÕES EXTERNOS
-            document.getElementById('vlc-btn').href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
-            document.getElementById('mx-btn').href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
+            const hoje = new Date().toISOString().split('T')[0];
+            const motorLink = `${MOTOR}/buscar?titulo=${encodeURIComponent(d.title)}`;
 
-            const trailer = d.videos.results.find(v => v.type === 'Trailer');
+            if(isEstreia && d.release_date > hoje) {
+                aviso.style.display = 'block';
+                [b_play, b_vlc, b_mx].forEach(b => { b.classList.add('btn-desabilitado'); b.href = "#"; });
+            } else {
+                aviso.style.display = 'none';
+                b_play.classList.remove('btn-desabilitado');
+                b_play.href = motorLink;
+                b_vlc.classList.remove('btn-desabilitado');
+                b_vlc.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
+                b_mx.classList.remove('btn-desabilitado');
+                b_mx.href = `intent://${motorLink.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
+            }
+
+            const trailer = d.videos.results.find(v => v.type === 'Trailer' || v.type === 'Teaser');
             document.getElementById('yt-frame').innerHTML = trailer ? `<iframe src="https://www.youtube.com/embed/${trailer.key}?rel=0" allowfullscreen></iframe>` : '<p style="text-align:center; padding:20px; color:#666;">Trailer não disponível.</p>';
+
+            document.getElementById('m-elenco').innerHTML = d.credits.cast.slice(0,10).map(a => `<div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}" onerror="this.src='https://via.placeholder.com/60'"><p>${a.name}</p></div>`).join('');
+            document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,10).map(f => `<div class="card" onclick="abrir(${f.id}, false)"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}"><p>${f.title}</p></div>`).join('');
+            
+            document.getElementById('overlay').scrollTo(0,0);
         }
 
-        function fechar() { document.getElementById('overlay').style.display = 'none'; document.body.style.overflow = ''; }
+        function fecharSilencioso() { document.getElementById('overlay').style.display = 'none'; document.body.style.overflow = ''; }
+        function fechar() { history.back(); }
+        function voltarHome() { window.location.reload(); }
+
+        let clickCount = 0; let lastClickTime = 0;
+        function handleLogoClick() {
+            const now = Date.now();
+            if (now - lastClickTime < 500) clickCount++; else clickCount = 1;
+            lastClickTime = now;
+            if (clickCount === 5) {
+                alert("🚀 Sincronizando Acervo Pessoal...");
+                fetch(`${MOTOR}/atualizar`).then(r => r.json()).then(d => alert("✅ Sucesso!")).catch(() => alert("❌ Erro de conexão."));
+                clickCount = 0;
+            }
+        }
+
+        function fecharBanner() { document.getElementById('apoio-banner').style.display = 'none'; sessionStorage.setItem('cineMegaApoioBanner', 'true'); }
+        function copiarPix() { navigator.clipboard.writeText("84999585659").then(() => { alert("✅ Chave PIX copiada!"); }); }
 
         async function realizarBusca() {
             const q = document.getElementById('busca').value; if(!q) return;
             document.getElementById('home-content').style.display = 'none';
             document.getElementById('busca-content').style.display = 'block';
             const res = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
-            document.getElementById('lista-busca').innerHTML = res.results.map(f => `<div class="card" onclick="abrir(${f.id})"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}" style="height:160px"><p>${f.title}</p></div>`).join('');
+            document.getElementById('lista-busca').innerHTML = res.results.map(f => `<div class="card" onclick="abrir(${f.id}, false)"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}" style="height:160px"><p>${f.title}</p></div>`).join('');
         }
 
         loadHome();
