@@ -18,10 +18,11 @@
         
         #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; -webkit-user-select: text; user-select: text; }
 
-        /* BANNER PIX */
-        .banner-pix { background: linear-gradient(90deg, #111, #000); border: 1px solid #e50914; border-radius: 10px; margin: 10px 15px; padding: 12px; display: flex; align-items: center; justify-content: space-between; animation: slideDown 0.6s ease-out; }
+        /* BANNER PIX DINÂMICO */
+        .banner-pix { background: linear-gradient(90deg, #111, #000); border: 1px solid #e50914; border-radius: 10px; margin: 10px 15px; padding: 12px; display: flex; align-items: center; justify-content: space-between; animation: slideDown 0.6s ease-out; position: relative; }
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .btn-pix { background: #e50914; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .fechar-pix { background: none; border: none; color: #666; font-size: 18px; cursor: pointer; padding: 0 5px; }
 
         .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; }
         #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: background-image 1s ease-in-out; display: flex; align-items: flex-end; }
@@ -36,13 +37,11 @@
         .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; }
         .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
-        /* OVERLAY - ONDE ESTAVA O ERRO */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: scroll; }
         .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
         .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; z-index: 3001; }
         .corpo-detalhes { padding: 20px; margin-top: -60px; background: #000; border-radius: 40px 40px 0 0; position: relative; min-height: 100vh; z-index: 2001; }
         
-        /* 🔥 CAPA PEQUENA EM CIMA DO BANNER */
         .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; object-fit: cover; box-shadow: 0 0 20px #000; background: #111; position: relative; z-index: 2002; }
         
         #aviso-estreia { background: #ffcc00; color: #000; padding: 12px; border-radius: 8px; font-size: 11px; font-weight: 900; text-align: center; margin-bottom: 15px; display: none; text-transform: uppercase; }
@@ -61,6 +60,10 @@
         .ator-card { flex: 0 0 auto; width: 70px; text-align: center; }
         .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; }
 
+        /* SEO / AVISO LEGAL RODAPÉ */
+        .footer { padding: 40px 20px; text-align: center; color: #444; font-size: 11px; line-height: 1.6; border-top: 1px solid #111; margin-top: 30px; }
+        .footer b { color: #666; }
+
         .ad-container { text-align: center; margin: 15px auto; min-height: 50px; display: flex; justify-content: center; }
     </style>
 </head>
@@ -74,7 +77,10 @@
     <div id="home-content">
         <div id="apoio-pix" class="banner-pix">
             <div style="font-size: 11px; color: #ccc;">🍿 <b>Ajude o Projeto!</b> PIX: 84999585659</div>
-            <button class="btn-pix" onclick="copiarPix()">COPIAR</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn-pix" onclick="copiarPix()">COPIAR</button>
+                <button class="fechar-pix" onclick="fecharBannerPix()">✕</button>
+            </div>
         </div>
 
         <div class="hero-container"><div id="hero-banner"><div class="hero-info"><h2 id="hero-titulo">Carregando...</h2></div></div></div>
@@ -88,6 +94,10 @@
         <div class="secao"><div class="titulo-secao">VAI ESTREAR</div><div class="carrossel" id="lista-estreias"></div></div>
         <div class="secao"><div class="titulo-secao">TRASH (ÍCONES DO TERROR 80-95)</div><div class="carrossel" id="lista-trash"></div></div>
         <div class="secao"><div class="titulo-secao">VOCÊ TÁ VELHO, HEIN?</div><div class="carrossel" id="lista-classicos"></div></div>
+        
+        <footer class="footer">
+            <b>AVISO LEGAL:</b> O Cine Mega é um motor de indexação automático de links de vídeo encontrados na web. <b>Nós não hospedamos nem transmitimos</b> nenhum arquivo de mídia em nossos servidores. Todo o conteúdo é de responsabilidade de seus respectivos proprietários. Caso haja algum conteúdo que infrinja seus direitos, entre em contato com os provedores de hospedagem originais.
+        </footer>
     </div>
 
     <div id="busca-content" style="display:none; padding-top: 20px;">
@@ -98,7 +108,6 @@
         <div id="m-backdrop" class="backdrop-header"><button class="fechar-btn" onclick="fechar()">✕ VOLTAR</button></div>
         <div class="corpo-detalhes">
             <img id="m-capa" class="capa-mini">
-            
             <h1 id="m-nome" style="text-align:center; font-size: 22px; margin-bottom: 5px;"></h1>
             <div id="m-meta" style="text-align:center; color:#ffcc00; font-size: 12px; margin-bottom: 20px;"></div>
             
@@ -219,8 +228,20 @@
 
         function fecharSilencioso() { document.getElementById('overlay').style.display = 'none'; document.body.style.overflow = ''; }
         function fechar() { history.back(); }
+        
+        // FECHAR PIX E MANTER OCULTO NA SESSÃO
+        function fecharBannerPix() { 
+            document.getElementById('apoio-pix').style.display = 'none'; 
+            sessionStorage.setItem('pixFechado', 'true'); 
+        }
+        
         function voltarHome() { document.getElementById('home-content').style.display = 'block'; document.getElementById('busca-content').style.display = 'none'; document.getElementById('busca').value = ''; }
         function copiarPix() { navigator.clipboard.writeText("84999585659").then(() => { alert("✅ PIX Copiado!"); }); }
+
+        // CHECAR SE O PIX JÁ FOI FECHADO ANTES
+        if (sessionStorage.getItem('pixFechado')) {
+            document.getElementById('apoio-pix').style.display = 'none';
+        }
 
         loadHome();
     </script>
