@@ -8,67 +8,97 @@
     <script type='text/javascript' src='//encouragingjawsordinarily.com/dc/14/b2/dc14b2a74392b432835a710add963d91.js'></script>
 
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; text-align: center; }
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
         
-        .header { background: #000; padding: 20px; border-bottom: 2px solid #e50914; margin-bottom: 20px; }
-        .logo { color: #e50914; font-weight: 900; font-size: 24px; letter-spacing: 2px; }
-
-        /* FORÇAR ESPAÇO DO BANNER (Se não tiver altura, o Ad não carrega) */
-        .ad-banner-container { 
-            width: 320px; 
-            height: 50px; 
-            margin: 20px auto; 
-            background: #111; 
-            display: block !important; 
-            min-height: 50px;
-            overflow: hidden;
+        /* BARREIRA (QUADRADINHO) */
+        #locker {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            background: #1a1a1a;
+            border: 2px solid #e50914;
+            border-radius: 15px;
+            padding: 20px;
+            z-index: 9999;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(229, 9, 20, 0.5);
+            animation: bounce 2s infinite; /* Efeito de subir e descer */
         }
 
-        .btn-link { 
-            display: block; 
-            width: 85%; 
-            margin: 15px auto; 
-            padding: 18px; 
-            background: #28a745; 
-            color: #fff; 
-            font-weight: bold; 
-            text-decoration: none; 
-            border-radius: 10px; 
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -60%); }
+        }
+
+        /* FUNDO ESCURO ATRÁS DO LOCKER */
+        #blur-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 9998;
+        }
+
+        .ad-space { width: 300px; height: 50px; margin: 15px auto; background: #000; }
+        
+        .btn-unlock {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
 
-        .footer { margin-top: 50px; color: #444; font-size: 12px; }
+        /* SITE "ESCONDIDO" */
+        .conteudo-site { padding: 20px; text-align: center; opacity: 0.2; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo">CINE MEGA</div>
+    <div id="blur-bg"></div>
+
+    <div id="locker">
+        <h3 style="margin-top:0; color:#ffcc00;">ACESSO BLOQUEADO</h3>
+        <p style="font-size: 12px;">Clique no botão abaixo para liberar o conteúdo completo do Cine Mega.</p>
+
+        <div class="ad-space">
+            <script type="text/javascript">
+                atOptions = { 'key' : '1e17cf3ad58e267c48756fe7d490a325', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="//encouragingjawsordinarily.com/1e17cf3ad58e267c48756fe7d490a325/invoke.js"></script>
+        </div>
+
+        <a href="https://encouragingjawsordinarily.com/ry7p009n?key=95b85148b51ed8b7c922d3349f922a8c" 
+           class="btn-unlock" 
+           target="_blank" 
+           onclick="liberarSite()">
+           🚀 LIBERAR AGORA
+        </a>
     </div>
 
-    <h3>🎬 ÁREA DE VALIDAÇÃO</h3>
-    <p style="color: #ccc; font-size: 14px;">Clique no banner ou no botão abaixo para liberar o acesso.</p>
-
-    <div class="ad-banner-container">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '1e17cf3ad58e267c48756fe7d490a325',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//encouragingjawsordinarily.com/1e17cf3ad58e267c48756fe7d490a325/invoke.js"></script>
+    <div class="conteudo-site" id="meu-site">
+        <h1>BEM-VINDO AO CINE MEGA</h1>
+        <p>Aqui ficam seus filmes e o Sniper...</p>
     </div>
 
-    <a href="https://encouragingjawsordinarily.com/ry7p009n?key=95b85148b51ed8b7c922d3349f922a8c" class="btn-link" target="_blank">
-        🚀 LIBERAR AGORA (ADS)
-    </a>
-
-    <div class="footer">Cine Mega - Sistema de Proteção Sniper</div>
+    <script>
+        function liberarSite() {
+            // Lógica: Quando clica no botão verde, o anúncio abre (pelo href) 
+            // e o JavaScript remove a barreira do site.
+            setTimeout(function() {
+                document.getElementById('locker').style.display = 'none';
+                document.getElementById('blur-bg').style.display = 'none';
+                document.getElementById('meu-site').style.opacity = '1';
+                document.getElementById('meu-site').style.pointerEvents = 'auto';
+            }, 1000); // Aguarda 1 segundo para garantir o clique no Ad
+        }
+    </script>
 
 </body>
 </html>
