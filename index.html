@@ -8,55 +8,53 @@
     <script type='text/javascript' src='//encouragingjawsordinarily.com/dc/14/b2/dc14b2a74392b432835a710add963d91.js'></script>
 
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; overflow: hidden; }
         
-        /* BARREIRA (QUADRADINHO) */
+        /* BOX AMISTOSA */
         #locker {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 320px;
-            background: #1a1a1a;
-            border: 2px solid #e50914;
-            border-radius: 15px;
-            padding: 20px;
+            width: 90%; max-width: 350px;
+            background: #111;
+            border-radius: 20px;
+            padding: 30px 20px;
             z-index: 9999;
             text-align: center;
-            box-shadow: 0 0 30px rgba(229, 9, 20, 0.5);
-            animation: bounce 2s infinite; /* Efeito de subir e descer */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid #333;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translate(-50%, -50%); }
-            50% { transform: translate(-50%, -60%); }
-        }
-
-        /* FUNDO ESCURO ATRÁS DO LOCKER */
         #blur-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
             z-index: 9998;
         }
 
-        .ad-space { width: 300px; height: 50px; margin: 15px auto; background: #000; }
-        
         .btn-unlock {
             display: block;
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: #28a745;
             color: #fff;
             font-weight: bold;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 12px;
             text-transform: uppercase;
+            font-size: 16px;
+            margin-top: 20px;
         }
 
-        /* SITE "ESCONDIDO" */
-        .conteudo-site { padding: 20px; text-align: center; opacity: 0.2; pointer-events: none; }
+        /* BOTÃO FINAL QUE APARECE DEPOIS DO CLIQUE */
+        #btn-final {
+            display: none;
+            background: #0088cc;
+            margin-top: 15px;
+        }
+
+        .ad-space { width: 300px; height: 50px; margin: 15px auto; }
     </style>
 </head>
 <body>
@@ -64,8 +62,8 @@
     <div id="blur-bg"></div>
 
     <div id="locker">
-        <h3 style="margin-top:0; color:#ffcc00;">ACESSO BLOQUEADO</h3>
-        <p style="font-size: 12px;">Clique no botão abaixo para liberar o conteúdo completo do Cine Mega.</p>
+        <h2 style="margin-top:0; color:#e50914;">CINE MEGA VIP</h2>
+        <p style="color: #ccc; font-size: 14px;">Olá, Mestre! Para liberar seu acesso ao validador e às listas, basta um clique no botão abaixo.</p>
 
         <div class="ad-space">
             <script type="text/javascript">
@@ -76,27 +74,25 @@
 
         <a href="https://encouragingjawsordinarily.com/ry7p009n?key=95b85148b51ed8b7c922d3349f922a8c" 
            class="btn-unlock" 
+           id="main-btn"
            target="_blank" 
-           onclick="liberarSite()">
+           onclick="liberarAcesso()">
            🚀 LIBERAR AGORA
+        </a>
+
+        <a href="https://t.me/ApkBugadoBot" class="btn-unlock" id="btn-final">
+            ✅ VOLTAR PARA O BOT
         </a>
     </div>
 
-    <div class="conteudo-site" id="meu-site">
-        <h1>BEM-VINDO AO CINE MEGA</h1>
-        <p>Aqui ficam seus filmes e o Sniper...</p>
-    </div>
-
     <script>
-        function liberarSite() {
-            // Lógica: Quando clica no botão verde, o anúncio abre (pelo href) 
-            // e o JavaScript remove a barreira do site.
+        function liberarAcesso() {
+            // Quando ele clicar, a gente avisa que liberou e mostra o botão de voltar
             setTimeout(function() {
-                document.getElementById('locker').style.display = 'none';
-                document.getElementById('blur-bg').style.display = 'none';
-                document.getElementById('meu-site').style.opacity = '1';
-                document.getElementById('meu-site').style.pointerEvents = 'auto';
-            }, 1000); // Aguarda 1 segundo para garantir o clique no Ad
+                document.getElementById('main-btn').style.display = 'none';
+                document.getElementById('btn-final').style.display = 'block';
+                document.querySelector('p').innerHTML = "✅ <b>Acesso Liberado!</b><br>Clique no botão azul abaixo para voltar ao Telegram.";
+            }, 1500);
         }
     </script>
 
