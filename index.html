@@ -10,7 +10,6 @@
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; overflow: hidden; }
         
-        /* BOX AMISTOSA */
         #locker {
             position: fixed;
             top: 50%; left: 50%;
@@ -37,7 +36,7 @@
             display: block;
             width: 100%;
             padding: 16px;
-            background: #28a745;
+            background: #e50914; /* Vermelho padrão Cine Mega */
             color: #fff;
             font-weight: bold;
             text-decoration: none;
@@ -47,10 +46,9 @@
             margin-top: 20px;
         }
 
-        /* BOTÃO FINAL QUE APARECE DEPOIS DO CLIQUE */
-        #btn-final {
+        #btn-entrar-site {
             display: none;
-            background: #0088cc;
+            background: #28a745; /* Verde para indicar sucesso */
             margin-top: 15px;
         }
 
@@ -62,8 +60,8 @@
     <div id="blur-bg"></div>
 
     <div id="locker">
-        <h2 style="margin-top:0; color:#e50914;">CINE MEGA VIP</h2>
-        <p style="color: #ccc; font-size: 14px;">Olá, Mestre! Para liberar seu acesso ao validador e às listas, basta um clique no botão abaixo.</p>
+        <h2 style="margin-top:0; color:#e50914;">CINE MEGA</h2>
+        <p style="color: #ccc; font-size: 14px;">Olá! Para liberar o acesso ao catálogo completo de filmes e séries, clique no botão abaixo.</p>
 
         <div class="ad-space">
             <script type="text/javascript">
@@ -77,21 +75,21 @@
            id="main-btn"
            target="_blank" 
            onclick="liberarAcesso()">
-           🚀 LIBERAR AGORA
+           🚀 LIBERAR ACESSO
         </a>
 
-        <a href="https://t.me/ApkBugadoBot" class="btn-unlock" id="btn-final">
-            ✅ VOLTAR PARA O BOT
-        </a>
+        <button class="btn-unlock" id="btn-entrar-site" onclick="location.reload()">
+            ✅ ACESSAR AGORA
+        </button>
     </div>
 
     <script>
         function liberarAcesso() {
-            // Quando ele clicar, a gente avisa que liberou e mostra o botão de voltar
+            // Após o clique no anúncio, o botão de acesso real aparece
             setTimeout(function() {
                 document.getElementById('main-btn').style.display = 'none';
-                document.getElementById('btn-final').style.display = 'block';
-                document.querySelector('p').innerHTML = "✅ <b>Acesso Liberado!</b><br>Clique no botão azul abaixo para voltar ao Telegram.";
+                document.getElementById('btn-entrar-site').style.display = 'block';
+                document.querySelector('p').innerHTML = "✅ <b>Acesso Liberado!</b><br>Clique no botão verde abaixo para entrar.";
             }, 1500);
         }
     </script>
