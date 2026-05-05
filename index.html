@@ -25,7 +25,8 @@
         .fechar-banner { color: #666; background: none; border: none; font-size: 16px; cursor: pointer; }
 
         .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; }
-        #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: 1.5s; display: flex; align-items: flex-end; }
+        /* 🔥 MANUTENÇÃO: Adicionado transition para trocar a foto suavemente */
+        #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: background-image 1s ease-in-out; display: flex; align-items: flex-end; }
         .hero-info { background: linear-gradient(to top, #000, transparent); width: 100%; padding: 40px 20px; }
         .hero-info h2 { margin: 0; font-size: 26px; font-weight: 800; }
 
@@ -134,9 +135,32 @@
             `).join('');
         }
 
+        // 🔥 MANUTENÇÃO: Variável do motor do banner
+        let bannerTimer;
+
         async function loadHome() {
             const pop = await api(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`);
             preencher('lista-populares', pop.results);
+            
+            // 🔥 MANUTENÇÃO: Lógica de rotação do Banner
+            if(pop.results && pop.results.length > 0) {
+                let heroIndex = 0;
+                const heroBanner = document.getElementById('hero-banner');
+                const heroTitulo = document.getElementById('hero-titulo');
+                
+                function atualizarBanner() {
+                    const f = pop.results[heroIndex];
+                    if(f.backdrop_path) {
+                        heroBanner.style.backgroundImage = `linear-gradient(to top, #000, transparent), url(https://image.tmdb.org/t/p/original${f.backdrop_path})`;
+                        heroTitulo.innerText = f.title;
+                    }
+                    heroIndex = (heroIndex + 1) % 5;
+                }
+                
+                atualizarBanner(); 
+                clearInterval(bannerTimer);
+                bannerTimer = setInterval(atualizarBanner, 4000); 
+            }
             
             const d = new Date(); d.setMonth(d.getMonth() + 1);
             const estreias = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&primary_release_date.gte=${d.toISOString().split('T')[0]}&sort_by=popularity.desc`);
@@ -152,12 +176,6 @@
             
             const classicos = await api(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=pt-BR&release_date.lte=1998-01-01&sort_by=vote_count.desc`);
             preencher('lista-classicos', classicos.results);
-
-            if(pop.results[0]) {
-                const f = pop.results[0];
-                document.getElementById('hero-banner').style.backgroundImage = `linear-gradient(to top, #000, transparent), url(https://image.tmdb.org/t/p/original${f.backdrop_path})`;
-                document.getElementById('hero-titulo').innerText = f.title;
-            }
 
             if (!sessionStorage.getItem('cineMegaApoioBanner')) {
                 setTimeout(() => { document.getElementById('apoio-banner').style.display = 'flex'; }, 1500);
