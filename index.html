@@ -8,61 +8,58 @@
     <script src="https://encouragingjawsordinarily.com/dc/14/b2/dc14b2a74392b432835a710add963d91.js"></script>
 
     <style>
-        /* PROTEÇÃO TOTAL - MANTENDO SEU CSS ORIGINAL */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
         html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; width: 100%; height: 100%; }
         body { padding-top: 110px; overflow-y: scroll; }
 
+        /* HEADER E BUSCA */
         .header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); padding: 15px; z-index: 1000; border-bottom: 2px solid #e50914; backdrop-filter: blur(10px); }
         .logo { color: #e50914; font-weight: 900; font-size: 22px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 3px; cursor: pointer; }
-        
         #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; -webkit-user-select: text; user-select: text; }
 
-        .banner-pix { background: linear-gradient(90deg, #111, #000); border: 1px solid #e50914; border-radius: 10px; margin: 10px 15px; padding: 12px; display: flex; align-items: center; justify-content: space-between; animation: slideDown 0.6s ease-out; position: relative; }
-        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* PIX E ADS */
+        .banner-pix { background: linear-gradient(90deg, #111, #000); border: 1px solid #e50914; border-radius: 10px; margin: 10px 15px; padding: 12px; display: flex; align-items: center; justify-content: space-between; position: relative; }
         .btn-pix { background: #e50914; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; }
         .fechar-pix { background: none; border: none; color: #666; font-size: 18px; cursor: pointer; padding: 0 5px; }
 
+        /* HOME VISUAL */
         .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; }
         #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: background-image 1s ease-in-out; display: flex; align-items: flex-end; }
         .hero-info { background: linear-gradient(to top, #000, transparent); width: 100%; padding: 40px 20px; }
-        .hero-info h2 { margin: 0; font-size: 26px; font-weight: 800; }
+        .hero-info h2 { margin: 0; font-size: 24px; font-weight: 800; }
 
-        .secao { padding: 20px 0 10px 15px; overflow: hidden; }
+        .secao { padding: 20px 0 10px 15px; }
         .titulo-secao { font-size: 14px; font-weight: bold; color: #ffcc00; margin-bottom: 12px; border-left: 4px solid #e50914; padding-left: 12px; text-transform: uppercase; }
-        
         .carrossel { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scrollbar-width: none; }
         .card { flex: 0 0 auto; width: 115px; cursor: pointer; }
-        .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; }
+        .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; }
         .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
+        /* NOVO VISUAL DA BUSCA (LISTA IGUAL APP) */
+        .item-busca { display: flex; gap: 15px; padding: 10px 15px; border-bottom: 1px solid #111; align-items: center; cursor: pointer; }
+        .item-busca img { width: 70px; height: 100px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+        .item-busca-info { overflow: hidden; }
+        .item-busca-info h4 { margin: 0 0 5px 0; font-size: 15px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-busca-info p { margin: 0; font-size: 11px; color: #777; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+
+        /* OVERLAY E DETALHES */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: scroll; }
         .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
         .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; z-index: 3001; }
         .corpo-detalhes { padding: 20px; margin-top: -60px; background: #000; border-radius: 40px 40px 0 0; position: relative; min-height: 100vh; z-index: 2001; }
+        .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; object-fit: cover; }
         
-        .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; object-fit: cover; box-shadow: 0 0 20px #000; background: #111; position: relative; z-index: 2002; }
+        .btn-play-web { display: block; width: 100%; background: #e50914; color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; text-decoration: none; text-align: center; margin-bottom: 10px; }
+        .btn-ad-unlock { display: block; width: 100%; background: #28a745; color: #fff; padding: 14px; border-radius: 10px; font-weight: bold; font-size: 13px; text-decoration: none; text-align: center; margin-bottom: 20px; }
         
-        .btn-play-web { display: block; width: 100%; background: #e50914; color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; text-decoration: none; text-align: center; margin-bottom: 10px; text-transform: uppercase; }
-        .btn-ad-unlock { display: block; width: 100%; background: #28a745; color: #fff; padding: 14px; border-radius: 10px; font-weight: bold; font-size: 13px; text-decoration: none; text-align: center; margin-bottom: 20px; border: 1px solid #1e7e34; }
-        .btn-desabilitado { background: #1a1a1a !important; color: #444 !important; pointer-events: none; opacity: 0.5; }
-
-        .mini-grid { display: none; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
+        .mini-grid { display: none; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .btn-mini { padding: 12px; border-radius: 8px; color: #fff; font-weight: bold; font-size: 11px; text-align: center; text-decoration: none; }
-
-        .trailer-box { width: 100%; aspect-ratio: 16/9; margin: 20px 0; border-radius: 10px; overflow: hidden; background: #111; border: 1px solid #333; }
+        .trailer-box { width: 100%; aspect-ratio: 16/9; margin: 20px 0; border-radius: 10px; overflow: hidden; background: #111; }
         .trailer-box iframe { width: 100%; height: 100%; border: none; }
-
         .elenco-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; }
         .ator-card { flex: 0 0 auto; width: 70px; text-align: center; }
         .ator-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #e50914; }
-
-        .footer { padding: 40px 20px; text-align: center; color: #444; font-size: 11px; line-height: 1.6; border-top: 1px solid #111; margin-top: 30px; }
-
-        /* BUSCA COMPORTADA (FIX PARA NÃO FICAR GIGANTE) */
-        #lista-busca { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding-right: 15px; }
-        #lista-busca .card { width: 100% !important; }
-        #lista-busca .card img { height: 150px !important; }
+        .footer { padding: 40px 20px; text-align: center; color: #444; font-size: 11px; border-top: 1px solid #111; }
     </style>
 </head>
 <body oncontextmenu="return false">
@@ -74,7 +71,7 @@
 
     <div id="home-content">
         <div id="apoio-pix" class="banner-pix">
-            <div style="font-size: 11px; color: #ccc;">🍿 <b>Ajude o Projeto!</b> PIX: 84999585659</div>
+            <div style="font-size: 11px; color: #ccc;">🍿 Ajude o Projeto! PIX: 84999585659</div>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <button class="btn-pix" onclick="copiarPix()">COPIAR</button>
                 <button class="fechar-pix" onclick="fecharBannerPix()">✕</button>
@@ -90,14 +87,14 @@
 
         <div class="secao"><div class="titulo-secao">MAIS ASSISTIDOS</div><div class="carrossel" id="lista-populares"></div></div>
         <div class="secao"><div class="titulo-secao">VAI ESTREAR</div><div class="carrossel" id="lista-estreias"></div></div>
-        <div class="secao"><div class="titulo-secao">TRASH (ÍCONES DO TERROR 80-95)</div><div class="carrossel" id="lista-trash"></div></div>
+        <div class="secao"><div class="titulo-secao">TRASH (80-95)</div><div class="carrossel" id="lista-trash"></div></div>
         <div class="secao"><div class="titulo-secao">VOCÊ TÁ VELHO, HEIN?</div><div class="carrossel" id="lista-classicos"></div></div>
         
-        <footer class="footer"><b>AVISO LEGAL:</b> O Cine Mega é um motor de indexação automático.</footer>
+        <footer class="footer">AVISO LEGAL: Motor de indexação automático de links.</footer>
     </div>
 
-    <div id="busca-content" style="display:none; padding-top: 10px;">
-        <div class="secao"><div class="titulo-secao">RESULTADOS</div><div id="lista-busca"></div></div>
+    <div id="busca-content" style="display:none; padding-bottom: 100px;">
+        <div class="secao"><div class="titulo-secao">RESULTADOS ENCONTRADOS</div><div id="lista-busca"></div></div>
     </div>
 
     <div id="overlay">
@@ -127,12 +124,20 @@
         const API_KEY = "c90fb79a2f7d756a49bee848bce5f413";
         const MOTOR = "https://api-scraper-cinema.onrender.com";
 
+        window.addEventListener('popstate', (e) => {
+            if (document.getElementById('overlay').style.display === 'block') {
+                document.getElementById('overlay').style.display = 'none'; document.body.style.overflow = '';
+            } else if (document.getElementById('busca-content').style.display === 'block') {
+                voltarHome();
+            }
+        });
+
         async function api(url) { try { const r = await fetch(url); return await r.json(); } catch(e) { return {results:[]}; } }
 
         function preencher(id, dados, estreando = false) {
             document.getElementById(id).innerHTML = dados.map(f => `
                 <div class="card" onclick="abrir(${f.id}, ${estreando})">
-                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/115x170/111/fff?text=CineMega'">
+                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/115x170/111/fff'">
                     <p>${f.title}</p>
                 </div>
             `).join('');
@@ -163,18 +168,25 @@
             const q = document.getElementById('busca').value.trim();
             if (q.length === 0) { voltarHome(); return; }
             if (q.length < 3) return;
+
+            if (document.getElementById('busca-content').style.display === 'none') history.pushState({p:'busca'}, '');
+
             document.getElementById('home-content').style.display = 'none';
             document.getElementById('busca-content').style.display = 'block';
             const d = await api(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(q)}&language=pt-BR`);
             document.getElementById('lista-busca').innerHTML = d.results.map(f => `
-                <div class="card" onclick="abrir(${f.id}, false)">
-                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/115x170/111/fff?text=CineMega'">
-                    <p>${f.title}</p>
+                <div class="item-busca" onclick="abrir(${f.id}, false)">
+                    <img src="https://image.tmdb.org/t/p/w200${f.poster_path}" onerror="this.src='https://via.placeholder.com/70x100/111/fff'">
+                    <div class="item-busca-info">
+                        <h4>${f.title}</h4>
+                        <p>${f.overview || "Sem sinopse disponível."}</p>
+                    </div>
                 </div>
             `).join('');
         }
 
         async function abrir(id, isE) {
+            history.pushState({p:'detalhes'}, '');
             document.getElementById('overlay').style.display = 'block';
             document.body.style.overflow = 'hidden';
             const d = await api(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=credits,recommendations,videos`);
@@ -184,8 +196,8 @@
             document.getElementById('m-sinopse').innerText = d.overview || "Sem sinopse.";
             document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
             
-            const av = document.getElementById('aviso-estreia');
             const bt = document.getElementById('btn-unlock');
+            const av = document.getElementById('aviso-estreia');
             if(isE && d.release_date > new Date().toISOString().split('T')[0]) {
                 av.style.display = 'block'; bt.style.display = 'none';
             } else {
@@ -214,7 +226,7 @@
             }, 1000);
         }
 
-        function fechar() { document.getElementById('overlay').style.display = 'none'; document.body.style.overflow = ''; }
+        function fechar() { history.back(); }
         function fecharBannerPix() { document.getElementById('apoio-pix').style.display = 'none'; sessionStorage.setItem('pixFechado', 'true'); }
         function voltarHome() { document.getElementById('home-content').style.display = 'block'; document.getElementById('busca-content').style.display = 'none'; document.getElementById('busca').value = ''; }
         function copiarPix() { navigator.clipboard.writeText("84999585659").then(() => { alert("✅ PIX Copiado!"); }); }
