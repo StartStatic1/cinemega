@@ -12,42 +12,47 @@
         html, body { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif; width: 100%; height: 100%; }
         body { padding-top: 110px; overflow-y: scroll; }
 
+        /* CABEÇALHO */
         .header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.95); padding: 15px; z-index: 1000; border-bottom: 2px solid #e50914; backdrop-filter: blur(10px); }
         .logo { color: #e50914; font-weight: 900; font-size: 22px; text-transform: uppercase; text-align: center; margin-bottom: 10px; letter-spacing: 3px; cursor: pointer; }
         #busca { width: 100%; max-width: 500px; display: block; margin: 0 auto; padding: 12px 20px; border-radius: 50px; border: 1px solid #333; background: #111; color: #fff; font-size: 16px; -webkit-user-select: text; user-select: text; }
 
+        /* PIX */
         .banner-pix { background: linear-gradient(90deg, #111, #000); border: 1px solid #e50914; border-radius: 10px; margin: 10px 15px; padding: 12px; display: flex; align-items: center; justify-content: space-between; position: relative; }
         .btn-pix { background: #e50914; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; }
         .fechar-pix { background: none; border: none; color: #666; font-size: 18px; cursor: pointer; padding: 0 5px; }
 
+        /* HERO BANNER */
         .hero-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #0a0a0a; }
         #hero-banner { width: 100%; height: 100%; background-size: cover; background-position: center; transition: background-image 1s ease-in-out; display: flex; align-items: flex-end; }
         .hero-info { background: linear-gradient(to top, #000, transparent); width: 100%; padding: 40px 20px; }
         .hero-info h2 { margin: 0; font-size: 24px; font-weight: 800; }
 
+        /* SEÇÕES E CARROSSEL */
         .secao { padding: 20px 0 10px 15px; overflow: hidden; }
         .titulo-secao { font-size: 14px; font-weight: bold; color: #ffcc00; margin-bottom: 12px; border-left: 4px solid #e50914; padding-left: 12px; text-transform: uppercase; }
-        
         .carrossel { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scrollbar-width: none; }
         .card { flex: 0 0 auto; width: 115px; cursor: pointer; }
         .card img { width: 100%; height: 170px; border-radius: 8px; object-fit: cover; border: 1px solid #222; background: #111; }
         .card p { font-size: 10px; margin: 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #bbb; }
 
-        /* LISTA DE BUSCA */
+        /* BUSCA EM LISTA */
         .item-busca { display: flex; gap: 15px; padding: 12px; border-bottom: 1px solid #111; align-items: center; cursor: pointer; }
         .item-busca img { width: 65px; height: 95px; border-radius: 6px; object-fit: cover; border: 1px solid #333; flex-shrink: 0; }
         .info-busca { overflow: hidden; flex: 1; }
-        .info-busca h4 { margin: 0 0 5px 0; font-size: 15px; color: #fff; }
-        .info-busca p { margin: 0; font-size: 11px; color: #666; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .info-busca h4 { margin: 0; font-size: 15px; color: #fff; }
+        .info-busca p { margin: 5px 0 0; font-size: 11px; color: #666; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
+        /* DETALHES OVERLAY */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; overflow-y: scroll; }
         .backdrop-header { width: 100%; height: 40vh; background-size: cover; background-position: center; position: relative; border-bottom: 2px solid #e50914; }
         .fechar-btn { position: absolute; top: 20px; right: 20px; background: #e50914; color: #fff; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; z-index: 3001; }
         .corpo-detalhes { padding: 20px; margin-top: -60px; background: #000; border-radius: 40px 40px 0 0; position: relative; min-height: 100vh; z-index: 2001; }
         .capa-mini { width: 140px; height: 200px; border-radius: 12px; margin: -130px auto 20px; display: block; border: 4px solid #000; object-fit: cover; }
         
-        .btn-play-web { display: block; width: 100%; background: #e50914; color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; text-decoration: none; text-align: center; margin-bottom: 10px; }
-        .btn-ad-unlock { display: block; width: 100%; background: #28a745; color: #fff; padding: 14px; border-radius: 10px; font-weight: bold; font-size: 13px; text-decoration: none; text-align: center; margin-bottom: 20px; }
+        /* BOTÕES PLAYER */
+        .btn-play-web { display: block; width: 100%; background: #e50914; color: #fff; padding: 16px; border-radius: 10px; font-weight: bold; font-size: 16px; text-decoration: none; text-align: center; margin-bottom: 10px; text-transform: uppercase; }
+        .btn-ad-unlock { display: block; width: 100%; background: #28a745; color: #fff; padding: 14px; border-radius: 10px; font-weight: bold; font-size: 13px; text-decoration: none; text-align: center; margin-bottom: 20px; border: 1px solid #1e7e34; }
         
         .mini-grid { display: none; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
         .btn-mini { padding: 12px; border-radius: 8px; color: #fff; font-weight: bold; font-size: 11px; text-align: center; text-decoration: none; }
@@ -63,7 +68,7 @@
 
     <div class="header">
         <div class="logo" onclick="voltarHome()">CINE MEGA</div>
-        <input type="text" id="busca" placeholder="O que vamos assistir?" oninput="realizarBusca()">
+        <input type="text" id="busca" placeholder="Pesquisar filme..." oninput="realizarBusca()">
     </div>
 
     <div id="home-content">
@@ -113,9 +118,7 @@
             <div class="titulo-secao">SINOPSE</div><p id="m-sinopse" style="color:#bbb; font-size: 13px; line-height: 1.6;"></p>
             <div class="titulo-secao">TRAILER</div><div class="trailer-box" id="yt-frame"></div>
             <div class="titulo-secao">ELENCO</div><div class="elenco-row" id="m-elenco"></div>
-            
-            <div class="titulo-secao" style="margin-top:20px;">VOCÊ TAMBÉM PODE GOSTAR</div>
-            <div class="carrossel" id="m-rec"></div>
+            <div class="titulo-secao" style="margin-top:20px;">VOCÊ TAMBÉM PODE GOSTAR</div><div class="carrossel" id="m-rec"></div>
         </div>
     </div>
 
@@ -190,10 +193,11 @@
             document.getElementById('m-nome').innerText = d.title;
             document.getElementById('m-capa').src = `https://image.tmdb.org/t/p/w300${d.poster_path}`;
             document.getElementById('m-backdrop').style.backgroundImage = `url(https://image.tmdb.org/t/p/original${d.backdrop_path})`;
-            document.getElementById('m-sinopse').innerText = d.overview || "Sem sinopse.";
+            document.getElementById('m-sinopse').innerText = d.overview || "Sinopse não disponível.";
             document.getElementById('m-meta').innerText = `${d.release_date.split('-')[0]} | ⭐ ${d.vote_average.toFixed(1)}`;
             
-            const tituloLimpo = d.title.replace(/&/g, "e").replace(/[^a-zA-Z0-9 ]/g, "");
+            // VACINA DE TÍTULO PARA O MOTOR
+            const tLimpo = d.title.replace(/&/g, "e").replace(/[:]/g, "").replace(/[^a-zA-Z0-9 ]/g, "").trim();
 
             const bt = document.getElementById('btn-unlock');
             const av = document.getElementById('aviso-estreia');
@@ -205,7 +209,7 @@
             document.getElementById('btn-main-play').style.display = 'none';
             document.getElementById('players-extra').style.display = 'none';
             
-            const ml = `${MOTOR}/buscar?titulo=${encodeURIComponent(tituloLimpo)}`;
+            const ml = `${MOTOR}/buscar?titulo=${encodeURIComponent(tLimpo)}`;
             document.getElementById('btn-main-play').href = ml;
             document.getElementById('vlc-btn').href = `intent://${ml.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=org.videolan.vlc;end`;
             document.getElementById('mx-btn').href = `intent://${ml.replace(/https?:\/\//,'')}#Intent;action=android.intent.action.VIEW;scheme=http;type=video/mp4;package=com.mxtech.videoplayer.ad;end`;
@@ -213,15 +217,7 @@
             const tr = d.videos.results.find(v => v.type === 'Trailer');
             document.getElementById('yt-frame').innerHTML = tr ? `<iframe src="https://www.youtube.com/embed/${tr.key}" allowfullscreen></iframe>` : '';
             document.getElementById('m-elenco').innerHTML = d.credits.cast.slice(0,8).map(a => `<div class="ator-card"><img src="https://image.tmdb.org/t/p/w200${a.profile_path}"><p>${a.name}</p></div>`).join('');
-            
-            // PREENCHE AS RECOMENDAÇÕES (VOCÊ TAMBÉM PODE GOSTAR)
-            document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,10).map(f => `
-                <div class="card" onclick="abrir(${f.id}, false)">
-                    <img src="https://image.tmdb.org/t/p/w300${f.poster_path}" onerror="this.src='https://via.placeholder.com/115x170/111/fff'">
-                    <p>${f.title}</p>
-                </div>
-            `).join('');
-            
+            document.getElementById('m-rec').innerHTML = d.recommendations.results.slice(0,10).map(f => `<div class="card" onclick="abrir(${f.id}, false)"><img src="https://image.tmdb.org/t/p/w300${f.poster_path}"><p>${f.title}</p></div>`).join('');
             document.getElementById('overlay').scrollTo(0,0);
         }
 
